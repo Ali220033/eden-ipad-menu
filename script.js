@@ -366,44 +366,44 @@ const addButtonLayouts = {
     { name: "Chicken Nuggets", x: 91.5, y: 96.2 }
   ],
   Coffees: [
-    { name: "Hot Coffee", x: 43.5, y: 59.3 },
-    { name: "Cappuccino", x: 92.2, y: 59.3 },
-    { name: "Espresso", x: 43.5, y: 91.8 },
-    { name: "Latte", x: 92.2, y: 91.8 }
+    { name: "Hot Coffee", x: 10.7, y: 37.4 },
+    { name: "Cappuccino", x: 81.1, y: 35.1 },
+    { name: "Espresso", x: 10.7, y: 70.5 },
+    { name: "Latte", x: 81.1, y: 70.5 }
   ],
   "Hot Teas": [
-    { name: "Green and Black Tea", x: 92.5, y: 30.4 },
-    { name: "Eden Special Fruit Tea", x: 92.5, y: 46.1 },
-    { name: "Moroccan Tea", x: 92.5, y: 61.8 },
-    { name: "Cranberry Tangerine", x: 92.5, y: 77.6 },
-    { name: "Maracuya Tea", x: 92.5, y: 93.4 }
+    { name: "Green and Black Tea", x: 9.7, y: 33.5 },
+    { name: "Eden Special Fruit Tea", x: 79.6, y: 45.2 },
+    { name: "Moroccan Tea", x: 19.2, y: 58.4 },
+    { name: "Cranberry Tangerine", x: 79.6, y: 72.4 },
+    { name: "Maracuya Tea", x: 19.2, y: 86.1 }
   ],
   "Iced Teas": [
-    { name: "Royal Iced Tea", x: 92.5, y: 30.4 },
-    { name: "Peach Iced Tea", x: 92.5, y: 46.1 },
-    { name: "Fruit Iced Tea", x: 92.5, y: 61.8 },
-    { name: "Classic Iced Tea", x: 92.5, y: 77.6 },
-    { name: "Mint Iced Tea", x: 92.5, y: 93.4 }
+    { name: "Royal Iced Tea", x: 9.7, y: 33.5 },
+    { name: "Peach Iced Tea", x: 79.6, y: 45.2 },
+    { name: "Fruit Iced Tea", x: 19.2, y: 58.4 },
+    { name: "Classic Iced Tea", x: 79.6, y: 72.4 },
+    { name: "Mint Iced Tea", x: 19.2, y: 86.1 }
   ],
   Milkshakes: [
-    { name: "Strawberry Milkshake", x: 92.5, y: 48 },
-    { name: "Oreo and Cookie Milkshake", x: 31.2, y: 95 },
-    { name: "Chocolate Milkshake", x: 62.3, y: 95 },
-    { name: "Vanilla Milkshake", x: 93.5, y: 95 }
+    { name: "Strawberry Milkshake", x: 11, y: 44.5 },
+    { name: "Oreo and Cookie Milkshake", x: 18, y: 80.2 },
+    { name: "Chocolate Milkshake", x: 49.2, y: 80.2 },
+    { name: "Vanilla Milkshake", x: 80.4, y: 80.2 }
   ],
   Lemonades: [
-    { name: "Virgin Mojito", x: 92.5, y: 51.5 },
-    { name: "Mango Maracuja", x: 43.5, y: 72.8 },
-    { name: "Strawberry Mango Mojito", x: 92.5, y: 72.8 },
-    { name: "Kiwi Lychee", x: 43.5, y: 94.2 },
-    { name: "Summer Splash", x: 92.5, y: 94.2 }
+    { name: "Virgin Mojito", x: 76, y: 28.2 },
+    { name: "Mango Maracuja", x: 88, y: 49.2 },
+    { name: "Strawberry Mango Mojito", x: 10.6, y: 62.3 },
+    { name: "Kiwi Lychee", x: 60.2, y: 77.6 },
+    { name: "Summer Splash", x: 88.2, y: 83.5 }
   ],
   "Soft Drinks": [
-    { name: "Coke", x: 92.5, y: 51.5 },
-    { name: "Diet Coke", x: 43.5, y: 72.8 },
-    { name: "Sprite", x: 92.5, y: 72.8 },
-    { name: "Fanta", x: 43.5, y: 94.2 },
-    { name: "Water", x: 92.5, y: 94.2 }
+    { name: "Coke", x: 76, y: 28.2 },
+    { name: "Diet Coke", x: 88, y: 49.2 },
+    { name: "Sprite", x: 10.6, y: 62.3 },
+    { name: "Fanta", x: 60.2, y: 77.6 },
+    { name: "Water", x: 88.2, y: 83.5 }
   ],
   Desserts: [
     { name: "Frozen Brew Treats", x: 50, y: 53.5 },
@@ -625,7 +625,7 @@ function createAddButtons(container, layout, section) {
     button.style.setProperty("--delay", `${index * 55}ms`);
     button.dataset.itemName = item.name;
     button.setAttribute("aria-label", `Add ${item.name} to basket`);
-    button.textContent = "ADD";
+    button.textContent = "+";
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       addToBasket(item.name, item.image || sectionPages[section]?.src || menuPages[activeMenu]?.src || "");
