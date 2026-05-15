@@ -509,6 +509,7 @@ let swipeStartX = 0;
 let swipeStartY = 0;
 let swipeTracking = false;
 let lastSwipeBackAt = 0;
+let navigationToken = 0;
 
 function runTransition(type = "page") {
   clearTimeout(transitionTimer);
@@ -533,7 +534,14 @@ function preloadImage(src) {
 
   const promise = new Promise((resolve) => {
     const img = new Image();
-    img.onload = () => resolve(true);
+    img.decoding = "async";
+    img.onload = () => {
+      if (img.decode) {
+        img.decode().then(() => resolve(true)).catch(() => resolve(true));
+        return;
+      }
+      resolve(true);
+    };
     img.onerror = () => resolve(false);
     img.src = src;
   });
@@ -562,6 +570,7 @@ function warmDetailImages() {
 }
 
 async function openMenu(category) {
+  const token = ++navigationToken;
   if (category === "specials") {
     activeMenu = "food";
     shell.dataset.activeMenu = "food";
@@ -570,13 +579,19 @@ async function openMenu(category) {
   }
 
   activeMenu = menuPages[category] ? category : "food";
-  preloadImage(menuPages[activeMenu].src);
+  await preloadImage(menuPages[activeMenu].src);
+  if (token !== navigationToken) {
+    return;
+  }
   menuArt.src = menuPages[activeMenu].src;
   menuArt.alt = menuPages[activeMenu].alt;
   shell.dataset.menuAspect = menuPages[activeMenu].aspect || "two-three";
   shell.dataset.activeMenu = activeMenu;
   runTransition();
   setTimeout(() => {
+    if (token !== navigationToken) {
+      return;
+    }
     shell.dataset.screen = "menu";
     renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
     closeQuickOrder();
@@ -585,6 +600,7 @@ async function openMenu(category) {
 }
 
 function closeMenu() {
+  navigationToken += 1;
   runTransition();
   shell.dataset.screen = "opening";
   clearMenuAddButtons();
@@ -593,19 +609,24 @@ function closeMenu() {
 }
 
 async function openSection(name) {
+  const token = ++navigationToken;
   activeSection = name || menuPages[activeMenu].defaultSection;
   const comingSoon = comingSoonSections[activeSection];
   sectionName.textContent = comingSoon?.title || activeSection;
   sectionEyebrow.textContent = comingSoon?.eyebrow || "EDEN Food Menu";
   sectionDescription.textContent = comingSoon?.description || "Item page ready for dishes, descriptions, prices, photos, and add-to-order controls.";
   const page = sectionPages[name];
+  const pageImages = page ? page.pages || [page.src] : [menuPages[activeMenu].src];
+  await Promise.all(pageImages.map((src) => preloadImage(src)));
+  if (token !== navigationToken) {
+    return;
+  }
   sectionScreen.classList.toggle("is-coming-soon", Boolean(comingSoon));
   sectionScreen.classList.toggle("needs-back-overlay", Boolean(page?.needsBackOverlay || overlayBackSections.has(name)));
   sectionScreen.classList.remove("has-scroll");
   sectionScrollStack.replaceChildren();
   sectionScrollStack.setAttribute("aria-hidden", "true");
   if (page) {
-    const pageImages = page.pages || [page.src];
     warmImages(pageImages);
     if (page.pages?.length) {
       sectionScreen.classList.add("has-scroll");
@@ -631,6 +652,9 @@ async function openSection(name) {
   }
   runTransition();
   setTimeout(() => {
+    if (token !== navigationToken) {
+      return;
+    }
     shell.dataset.screen = "section";
     clearAddButtons();
     renderItemHotspots(name);
@@ -640,6 +664,7 @@ async function openSection(name) {
 }
 
 function closeSection() {
+  navigationToken += 1;
   runTransition();
   shell.dataset.screen = activeSection === "Specials" ? "opening" : "menu";
   clearAddButtons();
@@ -652,6 +677,7 @@ function closeSection() {
 }
 
 function closeItemDetail() {
+  navigationToken += 1;
   runTransition("detail");
   shell.dataset.screen = "section";
   closeQuickOrder();
@@ -659,6 +685,7 @@ function closeItemDetail() {
 }
 
 async function openItemDetail(groupName, itemId) {
+  const token = ++navigationToken;
   const group = itemGroups[groupName] || [];
   const item = group.find((entry) => entry.id === itemId) || group[0];
   if (!item) {
@@ -668,10 +695,16 @@ async function openItemDetail(groupName, itemId) {
   activeItemGroup = groupName;
   activeItemId = item.id;
   detailQty = 1;
-  preloadImage(item.image);
+  await preloadImage(item.image);
+  if (token !== navigationToken) {
+    return;
+  }
   renderItemDetail(item);
   runTransition("detail");
   setTimeout(() => {
+    if (token !== navigationToken) {
+      return;
+    }
     shell.dataset.screen = "item";
     closeBasketPanel();
   }, transitionSwapDelay);
@@ -1037,8 +1070,8 @@ resizeCanvas();
 requestAnimationFrame(drawSparks);
 
 const warmWhenIdle = window.requestIdleCallback || ((callback) => setTimeout(callback, 350));
-warmWhenIdle(warmMenuImages);
-setTimeout(() => warmWhenIdle(warmDetailImages), 2200);
+warmMenuImages();
+setTimeout(() => warmWhenIdle(warmDetailImages), 650);
 
 window.addEventListener("resize", resizeCanvas, { passive: true });
 window.addEventListener("orientationchange", resizeCanvas, { passive: true });
