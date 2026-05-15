@@ -408,10 +408,16 @@ button {
 
 .food-card-hotspots button {
   position: relative;
+  appearance: none;
+  align-self: start;
+  justify-self: stretch;
+  width: 100%;
+  height: 76%;
   min-width: 44px;
   min-height: 44px;
   border: 0;
   outline: 0;
+  color: transparent;
   background: transparent;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -432,6 +438,7 @@ button {
 
 .ipad-shell[data-active-menu="hookah"] .food-card-hotspots button {
   position: absolute;
+  height: auto;
 }
 
 .ipad-shell[data-active-menu="hookah"] .food-card-hotspots button:nth-child(1) {
@@ -470,6 +477,7 @@ button {
   inset: 0;
   z-index: 7;
   pointer-events: none;
+  display: none;
 }
 
 .section-page-art,
@@ -568,11 +576,12 @@ button {
   inset: 0;
   z-index: 5;
   pointer-events: none;
+  display: none;
 }
 
 .add-food-button {
+  display: none;
   position: absolute;
-  display: grid;
   place-items: center;
   width: clamp(31px, 4.6vw, 43px);
   height: clamp(31px, 4.6vw, 43px);
@@ -712,12 +721,10 @@ button {
 .basket-mark {
   position: relative;
   z-index: 1;
-  width: 18px;
-  height: 15px;
-  border: 1.5px solid currentColor;
-  border-top: 0;
-  border-radius: 2px 2px 6px 6px;
-  box-shadow: 0 0 10px rgba(239, 189, 67, 0.36);
+  width: 25px;
+  height: 20px;
+  border: 0;
+  filter: drop-shadow(0 0 8px rgba(239, 189, 67, 0.48));
 }
 
 .basket-mark::before {
@@ -725,11 +732,25 @@ button {
   position: absolute;
   left: 3px;
   right: 3px;
-  top: -9px;
+  bottom: 6px;
   height: 12px;
-  border: 1.5px solid currentColor;
+  border: 1.6px solid currentColor;
   border-bottom: 0;
-  border-radius: 12px 12px 0 0;
+  border-radius: 18px 18px 0 0;
+  background: radial-gradient(ellipse at 50% 18%, rgba(255, 240, 165, 0.2), transparent 52%);
+}
+
+.basket-mark::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  bottom: 3px;
+  height: 4px;
+  border-top: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  border-radius: 999px;
+  box-shadow: 0 -13px 0 -7px currentColor;
 }
 
 .basket-text {

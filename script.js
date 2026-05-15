@@ -490,7 +490,7 @@ async function openMenu(category) {
   runTransition();
   setTimeout(() => {
     shell.dataset.screen = "menu";
-    renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
+    clearMenuAddButtons();
     closeBasketPanel();
   }, transitionSwapDelay);
 }
@@ -542,7 +542,7 @@ async function openSection(name) {
   runTransition();
   setTimeout(() => {
     shell.dataset.screen = "section";
-    renderAddButtons(name);
+    clearAddButtons();
     renderItemHotspots(name);
     closeBasketPanel();
   }, transitionSwapDelay);
@@ -623,26 +623,10 @@ function clearMenuAddButtons() {
 
 function renderMenuAddButtons(section) {
   clearMenuAddButtons();
-  const layout = addButtonLayouts[section] || [];
-  if (!layout.length) {
-    return;
-  }
-  document.querySelector(".menu-screen").classList.add("has-add-buttons");
-  createAddButtons(menuAddButtons, layout, section);
 }
 
 function renderAddButtons(section) {
   clearAddButtons();
-  if (itemGroups[section]) {
-    return;
-  }
-  const layout = addButtonLayouts[section] || [];
-  if (!layout.length) {
-    return;
-  }
-
-  sectionScreen.classList.add("has-add-buttons");
-  createAddButtons(addButtons, layout, section);
 }
 
 function createAddButtons(container, layout, section) {
@@ -655,7 +639,7 @@ function createAddButtons(container, layout, section) {
     button.style.setProperty("--delay", `${index * 55}ms`);
     button.dataset.itemName = item.name;
     button.setAttribute("aria-label", `Add ${item.name} to basket`);
-    button.textContent = "+";
+    button.textContent = "Add";
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       addToBasket(item.name, item.image || sectionPages[section]?.src || menuPages[activeMenu]?.src || "");
