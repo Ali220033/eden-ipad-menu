@@ -607,7 +607,8 @@ function onSwipeStart(event) {
   const point = event.touches?.[0] || event;
   swipeStartX = point.clientX;
   swipeStartY = point.clientY;
-  swipeTracking = swipeStartX <= Math.max(34, window.innerWidth * 0.045) && shell.dataset.screen !== "opening";
+  const swipeBackZone = Math.min(320, Math.max(96, window.innerWidth * 0.24));
+  swipeTracking = swipeStartX <= swipeBackZone && shell.dataset.screen !== "opening";
 }
 
 function onSwipeEnd(event) {
