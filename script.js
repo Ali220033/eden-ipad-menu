@@ -425,22 +425,52 @@ let height = 1;
 let dpr = 1;
 let sparks = [];
 let transitionTimer = 0;
+const transitionSwapDelay = 44;
+const transitionDuration = 620;
+const imagePreloadCache = new Map();
 
 function runTransition() {
   clearTimeout(transitionTimer);
   shell.classList.remove("is-transitioning");
   void shell.offsetWidth;
   shell.classList.add("is-transitioning");
-  transitionTimer = setTimeout(() => shell.classList.remove("is-transitioning"), 880);
+  transitionTimer = setTimeout(() => shell.classList.remove("is-transitioning"), transitionDuration);
 }
 
 function preloadImage(src) {
-  return new Promise((resolve) => {
+  if (!src) {
+    return Promise.resolve(false);
+  }
+
+  if (imagePreloadCache.has(src)) {
+    return imagePreloadCache.get(src);
+  }
+
+  const promise = new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(true);
     img.onerror = () => resolve(false);
     img.src = src;
   });
+  imagePreloadCache.set(src, promise);
+  return promise;
+}
+
+function warmImages(srcs) {
+  srcs.filter(Boolean).forEach((src) => {
+    preloadImage(src);
+  });
+}
+
+function warmMenuImages() {
+  const menuImages = Object.values(menuPages).map((page) => page.src);
+  const sectionImages = Object.values(sectionPages).flatMap((page) => page.pages || [page.src]);
+  warmImages([...menuImages, ...sectionImages]);
+}
+
+function warmDetailImages() {
+  const detailImages = Object.values(itemGroups).flatMap((group) => group.map((item) => item.image));
+  warmImages(detailImages);
 }
 
 async function openMenu(category) {
@@ -452,7 +482,7 @@ async function openMenu(category) {
   }
 
   activeMenu = menuPages[category] ? category : "food";
-  await preloadImage(menuPages[activeMenu].src);
+  preloadImage(menuPages[activeMenu].src);
   menuArt.src = menuPages[activeMenu].src;
   menuArt.alt = menuPages[activeMenu].alt;
   shell.dataset.menuAspect = menuPages[activeMenu].aspect || "two-three";
@@ -462,7 +492,7 @@ async function openMenu(category) {
     shell.dataset.screen = "menu";
     renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
     closeBasketPanel();
-  }, 110);
+  }, transitionSwapDelay);
 }
 
 function closeMenu() {
@@ -486,7 +516,7 @@ async function openSection(name) {
   sectionScrollStack.setAttribute("aria-hidden", "true");
   if (page) {
     const pageImages = page.pages || [page.src];
-    await Promise.all(pageImages.map((src) => preloadImage(src)));
+    warmImages(pageImages);
     if (page.pages?.length) {
       sectionScreen.classList.add("has-scroll");
       sectionScrollStack.setAttribute("aria-hidden", "false");
@@ -515,7 +545,7 @@ async function openSection(name) {
     renderAddButtons(name);
     renderItemHotspots(name);
     closeBasketPanel();
-  }, 110);
+  }, transitionSwapDelay);
 }
 
 function closeSection() {
@@ -545,13 +575,13 @@ async function openItemDetail(groupName, itemId) {
   activeItemGroup = groupName;
   activeItemId = item.id;
   detailQty = 1;
-  await preloadImage(item.image);
+  preloadImage(item.image);
   renderItemDetail(item);
   runTransition();
   setTimeout(() => {
     shell.dataset.screen = "item";
     closeBasketPanel();
-  }, 110);
+  }, transitionSwapDelay);
 }
 
 function clearAddButtons() {
@@ -806,6 +836,10 @@ document.querySelectorAll("[data-open-section]").forEach((button, index) => {
 
 resizeCanvas();
 requestAnimationFrame(drawSparks);
+
+const warmWhenIdle = window.requestIdleCallback || ((callback) => setTimeout(callback, 350));
+warmWhenIdle(warmMenuImages);
+setTimeout(() => warmWhenIdle(warmDetailImages), 2200);
 
 window.addEventListener("resize", resizeCanvas, { passive: true });
 window.addEventListener("orientationchange", resizeCanvas, { passive: true });
