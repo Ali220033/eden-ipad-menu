@@ -23,6 +23,12 @@ const itemQty = document.querySelector("[data-item-qty]");
 const itemSelector = document.querySelector("[data-item-selector]");
 const addButtons = document.querySelector("[data-add-buttons]");
 const menuAddButtons = document.querySelector("[data-menu-add-buttons]");
+const quickOrder = document.querySelector("[data-quick-order]");
+const quickOrderImage = document.querySelector("[data-quick-order-image]");
+const quickOrderKicker = document.querySelector("[data-quick-order-kicker]");
+const quickOrderName = document.querySelector("[data-quick-order-name]");
+const quickOrderInstructions = document.querySelector("[data-quick-order-instructions]");
+const quickOrderQty = document.querySelector("[data-quick-order-qty]");
 const basket = document.querySelector("[data-basket]");
 const basketButton = document.querySelector(".basket-button");
 const basketCount = document.querySelector("[data-basket-count]");
@@ -79,6 +85,14 @@ const sectionPages = {
   Burgers: {
     src: "assets/burgers-page-4k.png",
     alt: "EDEN burgers page"
+  },
+  Shawarma: {
+    src: "assets/shawarma-coming-soon-4k.png",
+    alt: "EDEN shawarma coming soon page"
+  },
+  Specials: {
+    src: "assets/specials-coming-soon-4k.png",
+    alt: "EDEN specials coming soon page"
   },
   "Heavy Blend": {
     src: "assets/heavy-blend-page-4k.png",
@@ -379,44 +393,107 @@ const addButtonLayouts = {
     { name: "Maracuya Tea", x: 19.2, y: 86.1 }
   ],
   "Iced Teas": [
-    { name: "Royal Iced Tea", x: 9.7, y: 33.5 },
-    { name: "Peach Iced Tea", x: 79.6, y: 45.2 },
-    { name: "Fruit Iced Tea", x: 19.2, y: 58.4 },
-    { name: "Classic Iced Tea", x: 79.6, y: 72.4 },
-    { name: "Mint Iced Tea", x: 19.2, y: 86.1 }
+    { name: "Eden Iced Tea", x: 9.7, y: 33.5 },
+    { name: "Mango Iced Tea", x: 79.6, y: 45.2 },
+    { name: "Peach Iced Tea", x: 19.2, y: 58.4 },
+    { name: "Passion Fruit Iced Tea", x: 79.6, y: 72.4 },
+    { name: "Classic Iced Tea", x: 19.2, y: 86.1 }
   ],
   Milkshakes: [
     { name: "Strawberry Milkshake", x: 11, y: 44.5 },
-    { name: "Oreo and Cookie Milkshake", x: 18, y: 80.2 },
-    { name: "Chocolate Milkshake", x: 49.2, y: 80.2 },
-    { name: "Vanilla Milkshake", x: 80.4, y: 80.2 }
+    { name: "Chocolate Milkshake", x: 18, y: 80.2 },
+    { name: "Vanilla Milkshake", x: 49.2, y: 80.2 },
+    { name: "Oreo Milkshake", x: 80.4, y: 80.2 }
   ],
   Lemonades: [
-    { name: "Virgin Mojito", x: 76, y: 28.2 },
-    { name: "Mango Maracuja", x: 88, y: 49.2 },
-    { name: "Strawberry Mango Mojito", x: 10.6, y: 62.3 },
-    { name: "Kiwi Lychee", x: 60.2, y: 77.6 },
-    { name: "Summer Splash", x: 88.2, y: 83.5 }
+    { name: "Fresh Lemonade", x: 76, y: 28.2 },
+    { name: "Mint Lemonade", x: 88, y: 49.2 },
+    { name: "Strawberry Lemonade", x: 10.6, y: 62.3 },
+    { name: "Blueberry Lemonade", x: 60.2, y: 77.6 },
+    { name: "Virgin Mojito", x: 88.2, y: 83.5 }
   ],
   "Soft Drinks": [
-    { name: "Coke", x: 76, y: 28.2 },
-    { name: "Diet Coke", x: 88, y: 49.2 },
-    { name: "Sprite", x: 10.6, y: 62.3 },
-    { name: "Fanta", x: 60.2, y: 77.6 },
-    { name: "Water", x: 88.2, y: 83.5 }
+    { name: "Cola", x: 76, y: 28.2 },
+    { name: "Sprite", x: 88, y: 49.2 },
+    { name: "Red Bull", x: 10.6, y: 62.3 },
+    { name: "Saratoga Sparkling", x: 60.2, y: 77.6 },
+    { name: "Saratoga Still", x: 88.2, y: 83.5 }
   ],
   Desserts: [
-    { name: "Frozen Brew Treats", x: 50, y: 53.5 },
-    { name: "Cheese Cake", x: 33.5, y: 91 },
-    { name: "Lava Cake", x: 90, y: 91 }
+    { name: "Cheese Cake", x: 50, y: 53.5 },
+    { name: "Pistachio Dream Cake", x: 33.5, y: 91 },
+    { name: "Chocolate Dream Cake", x: 90, y: 91 }
   ]
 };
+
+const quickOrderHotspots = {
+  Coffees: [
+    { x: 2, y: 28, w: 46, h: 28 },
+    { x: 52, y: 28, w: 46, h: 28 },
+    { x: 2, y: 61, w: 46, h: 28 },
+    { x: 52, y: 61, w: 46, h: 28 }
+  ],
+  "Hot Teas": [
+    { x: 2, y: 14, w: 96, h: 17 },
+    { x: 2, y: 31, w: 96, h: 15 },
+    { x: 2, y: 47, w: 96, h: 15 },
+    { x: 2, y: 63, w: 96, h: 15 },
+    { x: 2, y: 79, w: 96, h: 15 }
+  ],
+  "Iced Teas": [
+    { x: 2, y: 14, w: 96, h: 17 },
+    { x: 2, y: 31, w: 96, h: 15 },
+    { x: 2, y: 47, w: 96, h: 15 },
+    { x: 2, y: 63, w: 96, h: 15 },
+    { x: 2, y: 79, w: 96, h: 15 }
+  ],
+  Milkshakes: [
+    { x: 4, y: 24, w: 92, h: 30 },
+    { x: 3, y: 57, w: 30, h: 30 },
+    { x: 35, y: 57, w: 30, h: 30 },
+    { x: 67, y: 57, w: 30, h: 30 }
+  ],
+  Lemonades: [
+    { x: 4, y: 19, w: 42, h: 24 },
+    { x: 51, y: 19, w: 45, h: 24 },
+    { x: 3, y: 53, w: 30, h: 24 },
+    { x: 35, y: 53, w: 30, h: 24 },
+    { x: 67, y: 53, w: 30, h: 24 }
+  ],
+  "Soft Drinks": [
+    { x: 36, y: 13, w: 38, h: 36 },
+    { x: 67, y: 38, w: 29, h: 24 },
+    { x: 3, y: 56, w: 28, h: 27 },
+    { x: 34, y: 68, w: 30, h: 25 },
+    { x: 68, y: 68, w: 28, h: 25 }
+  ],
+  Desserts: [
+    { x: 13, y: 23, w: 74, h: 31 },
+    { x: 7, y: 57, w: 40, h: 30 },
+    { x: 53, y: 57, w: 40, h: 30 }
+  ]
+};
+
+const quickOrderSections = new Set(Object.keys(quickOrderHotspots));
+
+function slugify(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+Object.entries(quickOrderHotspots).forEach(([section, hotspots]) => {
+  (addButtonLayouts[section] || []).forEach((item, index) => {
+    item.hotspot = hotspots[index];
+    item.image = `assets/order-thumbs/${slugify(section)}-${slugify(item.name)}.png`;
+  });
+});
 
 let activeMenu = "food";
 let activeSection = "";
 let activeItemGroup = "";
 let activeItemId = "";
 let detailQty = 1;
+let activeQuickOrder = null;
+let activeQuickOrderQty = 1;
 let basketOpen = false;
 const basketLines = new Map();
 
@@ -478,7 +555,10 @@ function warmMenuImages() {
 
 function warmDetailImages() {
   const detailImages = Object.values(itemGroups).flatMap((group) => group.map((item) => item.image));
-  warmImages(detailImages);
+  const orderImages = Object.values(addButtonLayouts)
+    .flatMap((layout) => layout.map((item) => item.image))
+    .filter(Boolean);
+  warmImages([...detailImages, ...orderImages]);
 }
 
 async function openMenu(category) {
@@ -498,7 +578,8 @@ async function openMenu(category) {
   runTransition();
   setTimeout(() => {
     shell.dataset.screen = "menu";
-    clearMenuAddButtons();
+    renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
+    closeQuickOrder();
     closeBasketPanel();
   }, transitionSwapDelay);
 }
@@ -507,6 +588,7 @@ function closeMenu() {
   runTransition();
   shell.dataset.screen = "opening";
   clearMenuAddButtons();
+  closeQuickOrder();
   closeBasketPanel();
 }
 
@@ -552,6 +634,7 @@ async function openSection(name) {
     shell.dataset.screen = "section";
     clearAddButtons();
     renderItemHotspots(name);
+    closeQuickOrder();
     closeBasketPanel();
   }, transitionSwapDelay);
 }
@@ -564,12 +647,14 @@ function closeSection() {
   sectionScreen.classList.remove("needs-back-overlay", "has-scroll", "is-coming-soon");
   sectionScrollStack.replaceChildren();
   sectionScrollStack.setAttribute("aria-hidden", "true");
+  closeQuickOrder();
   closeBasketPanel();
 }
 
 function closeItemDetail() {
   runTransition("detail");
   shell.dataset.screen = "section";
+  closeQuickOrder();
   closeBasketPanel();
 }
 
@@ -593,6 +678,10 @@ async function openItemDetail(groupName, itemId) {
 }
 
 function goBack() {
+  if (quickOrder?.classList.contains("is-open")) {
+    closeQuickOrder();
+    return;
+  }
   const screen = shell.dataset.screen;
   if (screen === "item") {
     closeItemDetail();
@@ -639,22 +728,46 @@ function clearItemHotspots() {
 function renderItemHotspots(section) {
   clearItemHotspots();
   const group = itemGroups[section] || [];
-  if (!group.length) {
+  if (group.length) {
+    sectionScreen.classList.add("has-item-hotspots");
+    group.forEach((item) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "item-hotspot";
+      button.style.left = `${item.hotspot.x}%`;
+      button.style.top = `${item.hotspot.y}%`;
+      button.style.width = `${item.hotspot.w}%`;
+      button.style.height = `${item.hotspot.h}%`;
+      button.setAttribute("aria-label", `Open ${item.name}`);
+      button.addEventListener("click", () => openItemDetail(section, item.id));
+      itemHotspots.appendChild(button);
+    });
     return;
   }
 
-  sectionScreen.classList.add("has-item-hotspots");
-  group.forEach((item) => {
+  if (quickOrderSections.has(section)) {
+    sectionScreen.classList.add("has-item-hotspots");
+    renderQuickOrderHotspots(itemHotspots, section);
+  }
+}
+
+function renderQuickOrderHotspots(container, section) {
+  const layout = addButtonLayouts[section] || [];
+  layout.forEach((item) => {
+    const hotspot = item.hotspot || { x: item.x - 8, y: item.y - 8, w: 16, h: 16 };
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "item-hotspot";
-    button.style.left = `${item.hotspot.x}%`;
-    button.style.top = `${item.hotspot.y}%`;
-    button.style.width = `${item.hotspot.w}%`;
-    button.style.height = `${item.hotspot.h}%`;
-    button.setAttribute("aria-label", `Open ${item.name}`);
-    button.addEventListener("click", () => openItemDetail(section, item.id));
-    itemHotspots.appendChild(button);
+    button.className = "item-hotspot quick-order-hotspot";
+    button.style.left = `${hotspot.x}%`;
+    button.style.top = `${hotspot.y}%`;
+    button.style.width = `${hotspot.w}%`;
+    button.style.height = `${hotspot.h}%`;
+    button.setAttribute("aria-label", `Order ${item.name}`);
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      openQuickOrder(section, item);
+    });
+    container.appendChild(button);
   });
 }
 
@@ -665,6 +778,11 @@ function clearMenuAddButtons() {
 
 function renderMenuAddButtons(section) {
   clearMenuAddButtons();
+  if (!quickOrderSections.has(section)) {
+    return;
+  }
+  document.querySelector(".menu-screen").classList.add("has-add-buttons");
+  renderQuickOrderHotspots(menuAddButtons, section);
 }
 
 function renderAddButtons(section) {
@@ -742,6 +860,52 @@ function addCurrentDetailToBasket() {
   for (let index = 0; index < detailQty; index += 1) {
     addToBasket(itemName, item.image);
   }
+}
+
+function openQuickOrder(section, item) {
+  if (!quickOrder || !item) {
+    return;
+  }
+  activeQuickOrder = { section, ...item };
+  activeQuickOrderQty = 1;
+  quickOrderImage.src = item.image || sectionPages[section]?.src || menuPages[activeMenu]?.src || "";
+  quickOrderImage.alt = item.name;
+  quickOrderKicker.textContent = `EDEN ${section}`;
+  quickOrderName.textContent = item.name;
+  quickOrderInstructions.value = "";
+  quickOrderQty.textContent = activeQuickOrderQty;
+  quickOrder.hidden = false;
+  closeBasketPanel();
+  requestAnimationFrame(() => quickOrder.classList.add("is-open"));
+}
+
+function closeQuickOrder() {
+  if (!quickOrder) {
+    return;
+  }
+  quickOrder.classList.remove("is-open");
+  setTimeout(() => {
+    if (!quickOrder.classList.contains("is-open")) {
+      quickOrder.hidden = true;
+    }
+  }, 220);
+}
+
+function changeQuickOrderQty(delta) {
+  activeQuickOrderQty = Math.max(1, Math.min(12, activeQuickOrderQty + delta));
+  quickOrderQty.textContent = activeQuickOrderQty;
+}
+
+function addCurrentQuickOrderToBasket() {
+  if (!activeQuickOrder) {
+    return;
+  }
+  const note = quickOrderInstructions.value.trim();
+  const itemName = note ? `${activeQuickOrder.name} - ${note}` : activeQuickOrder.name;
+  for (let index = 0; index < activeQuickOrderQty; index += 1) {
+    addToBasket(itemName, activeQuickOrder.image);
+  }
+  closeQuickOrder();
 }
 
 function addToBasket(name, image = "") {
@@ -852,6 +1016,10 @@ document.querySelector("[data-close-item]").addEventListener("click", closeItemD
 document.querySelector("[data-qty-minus]").addEventListener("click", () => changeDetailQty(-1));
 document.querySelector("[data-qty-plus]").addEventListener("click", () => changeDetailQty(1));
 document.querySelector("[data-add-detail]").addEventListener("click", addCurrentDetailToBasket);
+document.querySelector("[data-close-quick-order]").addEventListener("click", closeQuickOrder);
+document.querySelector("[data-quick-qty-minus]").addEventListener("click", () => changeQuickOrderQty(-1));
+document.querySelector("[data-quick-qty-plus]").addEventListener("click", () => changeQuickOrderQty(1));
+document.querySelector("[data-add-quick-order]").addEventListener("click", addCurrentQuickOrderToBasket);
 
 shell.addEventListener("touchstart", onSwipeStart, { passive: true });
 shell.addEventListener("touchend", onSwipeEnd, { passive: true });

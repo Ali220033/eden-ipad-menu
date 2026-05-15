@@ -106,6 +106,29 @@
         <div class="item-selector" data-item-selector aria-label="Select item"></div>
       </section>
 
+      <section class="quick-order-sheet" data-quick-order aria-label="Order item" hidden>
+        <button class="quick-order-backdrop" type="button" data-close-quick-order aria-label="Close order panel"></button>
+        <div class="quick-order-card" role="dialog" aria-modal="true" aria-labelledby="quick-order-title">
+          <img class="quick-order-image" data-quick-order-image src="assets/eden-opening-clean-4k.png" alt="">
+          <div class="quick-order-copy">
+            <p data-quick-order-kicker>EDEN Menu</p>
+            <h2 id="quick-order-title" data-quick-order-name>Item</h2>
+            <label class="quick-order-instructions">
+              <span>Special Instructions</span>
+              <textarea data-quick-order-instructions rows="3" placeholder="Light ice, no sugar, allergies..."></textarea>
+            </label>
+            <div class="quick-order-row">
+              <div class="quick-order-quantity" aria-label="Quantity">
+                <button type="button" data-quick-qty-minus aria-label="Decrease quantity">-</button>
+                <span data-quick-order-qty>1</span>
+                <button type="button" data-quick-qty-plus aria-label="Increase quantity">&gt;</button>
+              </div>
+              <button class="quick-order-submit" type="button" data-add-quick-order>Add to Order</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <aside class="basket-widget" data-basket aria-label="Basket">
         <button class="basket-button" type="button" aria-label="Open basket">
           <span class="basket-mark" aria-hidden="true"></span>
