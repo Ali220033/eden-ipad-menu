@@ -304,94 +304,12 @@ button {
 }
 
 .section-screen.needs-back-overlay .back-hit-section {
-  top: 2.55%;
-  left: 3.1%;
-  width: clamp(80px, 10.4%, 108px);
-  height: clamp(25px, 3.05%, 34px);
-  min-width: 80px;
-  min-height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  border: 1px solid rgba(248, 205, 91, 0.64);
-  border-radius: 4px;
-  color: var(--gold-bright);
-  background:
-    linear-gradient(180deg, rgba(12, 8, 3, 0.44), rgba(2, 2, 1, 0.28));
-  clip-path: polygon(9% 0, 91% 0, 100% 32%, 100% 68%, 91% 100%, 9% 100%, 0 68%, 0 32%);
-  box-shadow: none;
-  filter: none;
-  backdrop-filter: none;
-  font-family: Cambria, Georgia, "Times New Roman", serif;
-  overflow: hidden;
-  transform: translateZ(0);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  display: block;
+  color: transparent;
 }
 
 .ipad-shell[data-active-menu="desserts"] .back-hit-menu {
-  top: 2.55%;
-  left: 3.1%;
-  width: clamp(80px, 10.4%, 108px);
-  height: clamp(25px, 3.05%, 34px);
-  min-width: 80px;
-  min-height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  border: 1px solid rgba(248, 205, 91, 0.64);
-  border-radius: 4px;
-  color: var(--gold-bright);
-  background:
-    linear-gradient(180deg, rgba(12, 8, 3, 0.44), rgba(2, 2, 1, 0.28));
-  clip-path: polygon(9% 0, 91% 0, 100% 32%, 100% 68%, 91% 100%, 9% 100%, 0 68%, 0 32%);
-  box-shadow: none;
-  filter: none;
-  backdrop-filter: none;
-  font-family: Cambria, Georgia, "Times New Roman", serif;
-  overflow: hidden;
-  transform: translateZ(0);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-}
-
-.section-screen.needs-back-overlay .back-hit-section,
-.ipad-shell[data-active-menu="desserts"] .back-hit-menu {
-  box-shadow: none;
-  isolation: isolate;
-}
-
-.section-screen.needs-back-overlay .back-hit-section > *,
-.ipad-shell[data-active-menu="desserts"] .back-hit-menu > * {
-  position: relative;
-  z-index: 2;
-}
-
-.section-screen.needs-back-overlay .back-hit-section::before,
-.ipad-shell[data-active-menu="desserts"] .back-hit-menu::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-left: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg);
-}
-
-.section-screen.needs-back-overlay .back-hit-section::after,
-.ipad-shell[data-active-menu="desserts"] .back-hit-menu::after {
-  content: "BACK";
-  font-size: clamp(10px, 1.35vw, 14px);
-  line-height: 1;
-  letter-spacing: 0.1em;
-}
-
-.section-screen.needs-back-overlay .back-hit-section:is(:hover, :focus-visible),
-.ipad-shell[data-active-menu="desserts"] .back-hit-menu:is(:hover, :focus-visible) {
-  border-color: rgba(255, 231, 137, 0.94);
-  background:
-    linear-gradient(180deg, rgba(12, 8, 3, 0.78), rgba(3, 2, 1, 0.58));
-  box-shadow: none;
-  transform: translateX(-1px);
+  color: transparent;
 }
 
 .food-card-hotspots {
@@ -1295,6 +1213,21 @@ button {
   animation: bookGildedLine 620ms cubic-bezier(0.18, 0.84, 0.22, 1);
 }
 
+.ipad-shell[data-transition="detail"].is-transitioning .page-veil {
+  animation: detailVeil 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ipad-shell[data-transition="detail"].is-transitioning .page-veil::before {
+  animation: none;
+}
+
+.ipad-shell[data-transition="detail"].is-transitioning .page-veil::after {
+  background:
+    radial-gradient(ellipse at 62% 52%, rgba(255, 226, 126, 0.34), rgba(239, 189, 67, 0.12) 28%, transparent 56%),
+    linear-gradient(90deg, rgba(3, 2, 1, 0.42), transparent 45%, rgba(255, 235, 150, 0.12));
+  animation: detailCameraGlow 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @keyframes openingBreath {
   from {
     transform: scale(1.003);
@@ -1405,6 +1338,32 @@ button {
   100% {
     opacity: 0;
     transform: translateX(-48%);
+  }
+}
+
+@keyframes detailVeil {
+  0% {
+    opacity: 0;
+  }
+  32% {
+    opacity: 0.86;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes detailCameraGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  35% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
   }
 }
 

@@ -428,13 +428,21 @@ let transitionTimer = 0;
 const transitionSwapDelay = 44;
 const transitionDuration = 620;
 const imagePreloadCache = new Map();
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeTracking = false;
+let lastSwipeBackAt = 0;
 
-function runTransition() {
+function runTransition(type = "page") {
   clearTimeout(transitionTimer);
   shell.classList.remove("is-transitioning");
+  shell.dataset.transition = type;
   void shell.offsetWidth;
   shell.classList.add("is-transitioning");
-  transitionTimer = setTimeout(() => shell.classList.remove("is-transitioning"), transitionDuration);
+  transitionTimer = setTimeout(() => {
+    shell.classList.remove("is-transitioning");
+    delete shell.dataset.transition;
+  }, transitionDuration);
 }
 
 function preloadImage(src) {
@@ -560,7 +568,7 @@ function closeSection() {
 }
 
 function closeItemDetail() {
-  runTransition();
+  runTransition("detail");
   shell.dataset.screen = "section";
   closeBasketPanel();
 }
@@ -577,11 +585,44 @@ async function openItemDetail(groupName, itemId) {
   detailQty = 1;
   preloadImage(item.image);
   renderItemDetail(item);
-  runTransition();
+  runTransition("detail");
   setTimeout(() => {
     shell.dataset.screen = "item";
     closeBasketPanel();
   }, transitionSwapDelay);
+}
+
+function goBack() {
+  const screen = shell.dataset.screen;
+  if (screen === "item") {
+    closeItemDetail();
+  } else if (screen === "section") {
+    closeSection();
+  } else if (screen === "menu") {
+    closeMenu();
+  }
+}
+
+function onSwipeStart(event) {
+  const point = event.touches?.[0] || event;
+  swipeStartX = point.clientX;
+  swipeStartY = point.clientY;
+  swipeTracking = swipeStartX <= Math.max(34, window.innerWidth * 0.045) && shell.dataset.screen !== "opening";
+}
+
+function onSwipeEnd(event) {
+  if (!swipeTracking) {
+    return;
+  }
+  const point = event.changedTouches?.[0] || event;
+  const dx = point.clientX - swipeStartX;
+  const dy = Math.abs(point.clientY - swipeStartY);
+  swipeTracking = false;
+  const now = Date.now();
+  if (dx > 72 && dy < 80 && now - lastSwipeBackAt > 450) {
+    lastSwipeBackAt = now;
+    goBack();
+  }
 }
 
 function clearAddButtons() {
@@ -810,6 +851,11 @@ document.querySelector("[data-close-item]").addEventListener("click", closeItemD
 document.querySelector("[data-qty-minus]").addEventListener("click", () => changeDetailQty(-1));
 document.querySelector("[data-qty-plus]").addEventListener("click", () => changeDetailQty(1));
 document.querySelector("[data-add-detail]").addEventListener("click", addCurrentDetailToBasket);
+
+shell.addEventListener("touchstart", onSwipeStart, { passive: true });
+shell.addEventListener("touchend", onSwipeEnd, { passive: true });
+shell.addEventListener("pointerdown", onSwipeStart);
+shell.addEventListener("pointerup", onSwipeEnd);
 
 document.querySelectorAll("[data-open-section]").forEach((button, index) => {
   button.addEventListener("click", () => {
