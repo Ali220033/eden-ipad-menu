@@ -394,24 +394,24 @@ const addButtonLayouts = {
     { name: "Maracuya Tea", x: 19.2, y: 86.1 }
   ],
   "Iced Teas": [
-    { name: "Eden Iced Tea", x: 9.7, y: 33.5 },
-    { name: "Mango Iced Tea", x: 79.6, y: 45.2 },
-    { name: "Peach Iced Tea", x: 19.2, y: 58.4 },
-    { name: "Passion Fruit Iced Tea", x: 79.6, y: 72.4 },
-    { name: "Classic Iced Tea", x: 19.2, y: 86.1 }
+    { name: "Eden Royal Tea", x: 78, y: 37 },
+    { name: "Eden Peach Garden", x: 20, y: 63 },
+    { name: "Citrus Sunset", x: 80, y: 63 },
+    { name: "Wild Berry Fusion", x: 20, y: 86 },
+    { name: "Green Apple Breeze", x: 80, y: 86 }
   ],
   Milkshakes: [
     { name: "Strawberry Milkshake", x: 11, y: 44.5 },
-    { name: "Chocolate Milkshake", x: 18, y: 80.2 },
-    { name: "Vanilla Milkshake", x: 49.2, y: 80.2 },
-    { name: "Oreo Milkshake", x: 80.4, y: 80.2 }
+    { name: "Oreo and Cookie Milkshake", x: 18, y: 80.2 },
+    { name: "Chocolate Milkshake", x: 49.2, y: 80.2 },
+    { name: "Vanilla Milkshake", x: 80.4, y: 80.2 }
   ],
   Lemonades: [
-    { name: "Fresh Lemonade", x: 76, y: 28.2 },
-    { name: "Mint Lemonade", x: 88, y: 49.2 },
-    { name: "Strawberry Lemonade", x: 10.6, y: 62.3 },
-    { name: "Blueberry Lemonade", x: 60.2, y: 77.6 },
-    { name: "Virgin Mojito", x: 88.2, y: 83.5 }
+    { name: "Virgin Mojito", x: 50, y: 40 },
+    { name: "Mango Maracuya", x: 20, y: 63 },
+    { name: "Strawberry Mango Mojito", x: 80, y: 63 },
+    { name: "Kiwi Lychee", x: 20, y: 86 },
+    { name: "Summer Splash", x: 80, y: 86 }
   ],
   "Soft Drinks": [
     { name: "Cola", x: 76, y: 28.2 },
@@ -421,9 +421,9 @@ const addButtonLayouts = {
     { name: "Saratoga Still", x: 88.2, y: 83.5 }
   ],
   Desserts: [
-    { name: "Cheese Cake", x: 50, y: 53.5 },
-    { name: "Pistachio Dream Cake", x: 33.5, y: 91 },
-    { name: "Chocolate Dream Cake", x: 90, y: 91 }
+    { name: "Frozen Brew Treats", x: 68, y: 36 },
+    { name: "Cheese Cake", x: 28, y: 78 },
+    { name: "Lava Cake", x: 78, y: 78 }
   ]
 };
 
@@ -442,11 +442,11 @@ const quickOrderHotspots = {
     { x: 2, y: 79, w: 96, h: 15 }
   ],
   "Iced Teas": [
-    { x: 2, y: 14, w: 96, h: 17 },
-    { x: 2, y: 31, w: 96, h: 15 },
-    { x: 2, y: 47, w: 96, h: 15 },
-    { x: 2, y: 63, w: 96, h: 15 },
-    { x: 2, y: 79, w: 96, h: 15 }
+    { x: 34, y: 8, w: 63, h: 39 },
+    { x: 2, y: 48, w: 47, h: 23 },
+    { x: 51, y: 48, w: 47, h: 23 },
+    { x: 2, y: 72, w: 47, h: 23 },
+    { x: 51, y: 72, w: 47, h: 23 }
   ],
   Milkshakes: [
     { x: 4, y: 24, w: 92, h: 30 },
@@ -455,23 +455,23 @@ const quickOrderHotspots = {
     { x: 67, y: 57, w: 30, h: 30 }
   ],
   Lemonades: [
-    { x: 4, y: 19, w: 42, h: 24 },
-    { x: 51, y: 19, w: 45, h: 24 },
-    { x: 3, y: 53, w: 30, h: 24 },
-    { x: 35, y: 53, w: 30, h: 24 },
-    { x: 67, y: 53, w: 30, h: 24 }
+    { x: 22, y: 17, w: 56, h: 36 },
+    { x: 1, y: 50, w: 45, h: 22 },
+    { x: 54, y: 50, w: 45, h: 22 },
+    { x: 1, y: 72, w: 45, h: 25 },
+    { x: 54, y: 72, w: 45, h: 25 }
   ],
   "Soft Drinks": [
-    { x: 36, y: 13, w: 38, h: 36 },
-    { x: 67, y: 38, w: 29, h: 24 },
-    { x: 3, y: 56, w: 28, h: 27 },
-    { x: 34, y: 68, w: 30, h: 25 },
-    { x: 68, y: 68, w: 28, h: 25 }
+    { x: 40, y: 4, w: 40, h: 48 },
+    { x: 62, y: 32, w: 36, h: 32 },
+    { x: 1, y: 49, w: 39, h: 39 },
+    { x: 32, y: 61, w: 35, h: 35 },
+    { x: 66, y: 65, w: 32, h: 31 }
   ],
   Desserts: [
-    { x: 13, y: 23, w: 74, h: 31 },
-    { x: 7, y: 57, w: 40, h: 30 },
-    { x: 53, y: 57, w: 40, h: 30 }
+    { x: 38, y: 6, w: 59, h: 45 },
+    { x: 2, y: 52, w: 48, h: 42 },
+    { x: 51, y: 52, w: 47, h: 42 }
   ]
 };
 
@@ -481,10 +481,44 @@ function slugify(value) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
+const quickOrderImages = {
+  "Hot Coffee": "assets/coffee.png",
+  Cappuccino: "assets/cappuccino.png",
+  Espresso: "assets/espresso.png",
+  Latte: "assets/latte.png",
+  "Green and Black Tea": "assets/green and black teas.png",
+  "Eden Special Fruit Tea": "assets/eden special fruit tea.png",
+  "Moroccan Tea": "assets/Morrocan Tea.png",
+  "Cranberry Tangerine": "assets/Tangerine Tea.png",
+  "Maracuya Tea": "assets/Maracuya tea.png",
+  "Eden Royal Tea": "assets/Eden Royal tea.png",
+  "Eden Peach Garden": "assets/Eden peach garden.png",
+  "Citrus Sunset": "assets/Sunset citrus.png",
+  "Wild Berry Fusion": "assets/wild berry fusion.png",
+  "Green Apple Breeze": "assets/green apple breeze.png",
+  "Strawberry Milkshake": "assets/strawberry milkshake.png",
+  "Oreo and Cookie Milkshake": "assets/oreo milkshake.png",
+  "Chocolate Milkshake": "assets/Chocolate milkshake.png",
+  "Vanilla Milkshake": "assets/vanilla milkshake.png",
+  "Virgin Mojito": "assets/mojito.png",
+  "Mango Maracuya": "assets/mango maracuya.png",
+  "Strawberry Mango Mojito": "assets/strawberry mango.png",
+  "Kiwi Lychee": "assets/kiwi lychee.png",
+  "Summer Splash": "assets/apple cucumber.png",
+  Cola: "assets/cola.png",
+  Sprite: "assets/sprite.png",
+  "Red Bull": "assets/Redbull.png",
+  "Saratoga Sparkling": "assets/saratoga sparkling.png",
+  "Saratoga Still": "assets/saratoga still.png",
+  "Frozen Brew Treats": "assets/frozen fruit.png",
+  "Cheese Cake": "assets/cheesecake.png",
+  "Lava Cake": "assets/lava cake.png"
+};
+
 Object.entries(quickOrderHotspots).forEach(([section, hotspots]) => {
   (addButtonLayouts[section] || []).forEach((item, index) => {
     item.hotspot = hotspots[index];
-    item.image = `assets/order-thumbs/${slugify(section)}-${slugify(item.name)}.png`;
+    item.image = quickOrderImages[item.name] || `assets/order-thumbs/${slugify(section)}-${slugify(item.name)}.png`;
   });
 });
 

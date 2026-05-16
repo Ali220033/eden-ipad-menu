@@ -136,7 +136,7 @@ button {
 
 .enter-area {
   position: absolute;
-  inset: 0;
+  inset: 0 0 18% 0;
   z-index: 5;
   cursor: pointer;
   background: transparent;
@@ -151,7 +151,7 @@ button {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   height: 14.5%;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .opening-hotspots button {
@@ -609,7 +609,8 @@ button {
 .quick-order-image {
   width: 100%;
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
   border: 1px solid rgba(239, 189, 67, 0.36);
   border-radius: 8px;
   background: #050403;
@@ -951,7 +952,7 @@ button {
   height: 44px;
   border: 1px solid rgba(239, 189, 67, 0.42);
   border-radius: 6px;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   background: #050403;
   box-shadow: 0 0 12px rgba(239, 189, 67, 0.12);
