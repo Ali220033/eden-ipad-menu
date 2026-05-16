@@ -1443,7 +1443,6 @@ button {
   pointer-events: none;
   opacity: 0;
   overflow: hidden;
-  perspective: 1600px;
 }
 
 .page-veil::before,
@@ -1456,51 +1455,42 @@ button {
 }
 
 .page-veil::before {
-  left: auto;
-  width: 62%;
   background:
-    linear-gradient(90deg, rgba(255, 242, 174, 0.06), rgba(255, 234, 133, 0.34) 6%, rgba(6, 4, 2, 0.72) 34%, rgba(255, 223, 112, 0.2) 72%, transparent),
-    radial-gradient(ellipse at 0 50%, rgba(255, 238, 164, 0.42), transparent 52%);
-  border-left: 1px solid rgba(255, 235, 148, 0.82);
-  box-shadow: -18px 0 42px rgba(255, 207, 73, 0.26), inset 12px 0 28px rgba(255, 235, 148, 0.12);
-  mix-blend-mode: screen;
-  transform: rotateY(0deg) translateX(18%);
-  transform-origin: left center;
+    radial-gradient(ellipse at 50% 50%, rgba(255, 226, 116, 0.08), transparent 48%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.58));
 }
 
 .page-veil::after {
-  background:
-    linear-gradient(90deg, transparent 0 45%, rgba(255, 236, 150, 0.58) 49%, rgba(255, 236, 150, 0.16) 51%, transparent 57%),
-    radial-gradient(ellipse at 50% 50%, rgba(255, 205, 78, 0.22), transparent 58%);
-  mix-blend-mode: screen;
-  transform: translateX(14%);
+  inset: 10px;
+  border: 1px solid rgba(255, 226, 116, 0.16);
+  box-shadow: inset 0 0 34px rgba(239, 189, 67, 0.1), 0 0 28px rgba(0, 0, 0, 0.24);
 }
 
 .ipad-shell.is-transitioning .page-veil {
-  animation: bookVeil 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: luxuryVeil 420ms ease;
 }
 
 .ipad-shell.is-transitioning .page-veil::before {
-  animation: bookPageTurn 620ms cubic-bezier(0.18, 0.84, 0.22, 1);
+  animation: luxuryDim 420ms ease;
 }
 
 .ipad-shell.is-transitioning .page-veil::after {
-  animation: bookGildedLine 620ms cubic-bezier(0.18, 0.84, 0.22, 1);
+  animation: luxuryEdge 420ms ease;
 }
 
 .ipad-shell[data-transition="detail"].is-transitioning .page-veil {
-  animation: detailVeil 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: luxuryVeil 360ms ease;
 }
 
 .ipad-shell[data-transition="detail"].is-transitioning .page-veil::before {
-  animation: none;
+  background:
+    radial-gradient(ellipse at 62% 52%, rgba(255, 226, 126, 0.1), transparent 42%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.46));
+  animation: luxuryDim 360ms ease;
 }
 
 .ipad-shell[data-transition="detail"].is-transitioning .page-veil::after {
-  background:
-    radial-gradient(ellipse at 62% 52%, rgba(255, 226, 126, 0.34), rgba(239, 189, 67, 0.12) 28%, transparent 56%),
-    linear-gradient(90deg, rgba(3, 2, 1, 0.42), transparent 45%, rgba(255, 235, 150, 0.12));
-  animation: detailCameraGlow 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: luxuryEdge 360ms ease;
 }
 
 @keyframes openingBreath {
@@ -1571,12 +1561,12 @@ button {
   }
 }
 
-@keyframes bookVeil {
+@keyframes luxuryVeil {
   0% {
     opacity: 0;
   }
-  18%,
-  68% {
+  28%,
+  62% {
     opacity: 1;
   }
   100% {
@@ -1584,61 +1574,29 @@ button {
   }
 }
 
-@keyframes bookPageTurn {
+@keyframes luxuryDim {
   0% {
     opacity: 0;
-    transform: rotateY(0deg) translateX(22%) scaleX(0.72);
   }
-  18% {
-    opacity: 0.96;
-  }
-  64% {
-    opacity: 0.78;
-    transform: rotateY(-52deg) translateX(-34%) scaleX(1.08);
-  }
-  100% {
-    opacity: 0;
-    transform: rotateY(-82deg) translateX(-68%) scaleX(1.16);
-  }
-}
-
-@keyframes bookGildedLine {
-  0% {
-    opacity: 0;
-    transform: translateX(42%);
-  }
-  20% {
+  42% {
     opacity: 0.72;
   }
   100% {
     opacity: 0;
-    transform: translateX(-48%);
   }
 }
 
-@keyframes detailVeil {
+@keyframes luxuryEdge {
   0% {
     opacity: 0;
+    transform: scale(0.992);
   }
-  32% {
-    opacity: 0.86;
+  46% {
+    opacity: 0.56;
   }
   100% {
     opacity: 0;
-  }
-}
-
-@keyframes detailCameraGlow {
-  0% {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  35% {
-    opacity: 0.78;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.08);
+    transform: scale(1.004);
   }
 }
 
