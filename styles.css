@@ -884,9 +884,92 @@ button {
   letter-spacing: 0;
 }
 
+.call-waiter-button {
+  position: absolute;
+  top: calc(1.6% + 54px);
+  right: 2.2%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 118px;
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid rgba(239, 189, 67, 0.54);
+  border-radius: 999px;
+  color: var(--gold-bright);
+  background:
+    radial-gradient(circle at 22% 0%, rgba(255, 236, 156, 0.18), transparent 38%),
+    rgba(5, 4, 3, 0.68);
+  box-shadow:
+    0 0 0 1px rgba(74, 48, 10, 0.38),
+    0 12px 30px rgba(0, 0, 0, 0.38),
+    inset 0 0 16px rgba(239, 189, 67, 0.08);
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(10px, 1.18vw, 13px);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 180ms ease, color 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.call-waiter-button:is(:hover, :focus-visible),
+.call-waiter-button.is-called {
+  outline: 0;
+  border-color: rgba(255, 224, 127, 0.82);
+  color: #fff2bf;
+  background:
+    radial-gradient(circle at 22% 0%, rgba(255, 236, 156, 0.28), transparent 42%),
+    rgba(5, 4, 3, 0.82);
+  transform: translateY(-1px);
+}
+
+.call-waiter-button:disabled {
+  cursor: default;
+}
+
+.call-waiter-bell {
+  position: relative;
+  width: 13px;
+  height: 15px;
+  flex: 0 0 auto;
+  border: 1.5px solid currentColor;
+  border-bottom: 0;
+  border-radius: 12px 12px 5px 5px;
+  filter: drop-shadow(0 0 6px rgba(239, 189, 67, 0.45));
+}
+
+.call-waiter-bell::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 6px;
+  height: 4px;
+  border: 1.5px solid currentColor;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  transform: translateX(-50%);
+}
+
+.call-waiter-bell::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
 .basket-panel {
   position: absolute;
-  top: calc(1.6% + 56px);
+  top: calc(1.6% + 98px);
   right: 2.2%;
   width: min(270px, 62vw);
   max-height: 42vh;

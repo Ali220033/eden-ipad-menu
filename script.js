@@ -35,6 +35,8 @@ const basketButton = document.querySelector(".basket-button");
 const basketCount = document.querySelector("[data-basket-count]");
 const basketItems = document.querySelector("[data-basket-items]");
 const basketEmpty = document.querySelector("[data-basket-empty]");
+const callWaiterButton = document.querySelector("[data-call-waiter]");
+const callWaiterLabel = document.querySelector("[data-call-waiter-label]");
 
 const sectionPages = {
   "Main Course": {
@@ -1100,6 +1102,19 @@ function toggleBasketPanel() {
   basket.classList.toggle("is-open", basketOpen);
 }
 
+function callWaiter() {
+  callWaiterButton.classList.add("is-called");
+  callWaiterLabel.textContent = "Called";
+  callWaiterButton.disabled = true;
+  closeBasketPanel();
+
+  setTimeout(() => {
+    callWaiterButton.classList.remove("is-called");
+    callWaiterLabel.textContent = "Call Waiter";
+    callWaiterButton.disabled = false;
+  }, 3500);
+}
+
 function resizeCanvas() {
   const rect = opening.getBoundingClientRect();
   dpr = Math.min(window.devicePixelRatio || 1, 3);
@@ -1162,6 +1177,7 @@ document.querySelectorAll("[data-open-menu]").forEach((button) => {
 });
 
 basketButton.addEventListener("click", toggleBasketPanel);
+callWaiterButton.addEventListener("click", callWaiter);
 document.querySelector("[data-back-menu]").addEventListener("click", closeMenu);
 document.querySelector("[data-back-section]").addEventListener("click", closeSection);
 document.querySelector("[data-close-item]").addEventListener("click", closeItemDetail);
