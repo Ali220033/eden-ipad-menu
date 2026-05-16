@@ -488,6 +488,32 @@ Object.entries(quickOrderHotspots).forEach(([section, hotspots]) => {
   });
 });
 
+const basketImageByName = new Map();
+
+Object.values(itemGroups).forEach((group) => {
+  group.forEach((item) => basketImageByName.set(item.name, item.image));
+});
+
+Object.values(addButtonLayouts).forEach((layout) => {
+  layout.forEach((item) => {
+    if (item.image) {
+      basketImageByName.set(item.name, item.image);
+    }
+  });
+});
+
+function isMenuFallbackImage(image = "") {
+  return /(?:menu-page|page-4k|coming-soon|eden-opening)/.test(image) && !image.includes("detail-") && !image.includes("order-thumbs/");
+}
+
+function resolveBasketImage(name, providedImage = "") {
+  if (providedImage && !isMenuFallbackImage(providedImage)) {
+    return providedImage;
+  }
+  const cleanName = name.split(" - ")[0];
+  return basketImageByName.get(cleanName) || providedImage || "assets/eden-opening-clean-4k.webp";
+}
+
 let activeMenu = "food";
 let activeSection = "";
 let activeItemGroup = "";
@@ -886,7 +912,7 @@ function createAddButtons(container, layout, section) {
     button.textContent = "Add";
     button.addEventListener("click", (event) => {
       event.stopPropagation();
-      addToBasket(item.name, item.image || sectionPages[section]?.src || menuPages[activeMenu]?.src || "");
+      addToBasket(item.name, resolveBasketImage(item.name, item.image));
     });
     container.appendChild(button);
   });
@@ -950,9 +976,10 @@ function openQuickOrder(section, item) {
   if (!quickOrder || !item) {
     return;
   }
-  activeQuickOrder = { section, ...item };
+  const image = resolveBasketImage(item.name, item.image);
+  activeQuickOrder = { section, ...item, image };
   activeQuickOrderQty = 1;
-  quickOrderImage.src = item.image || sectionPages[section]?.src || menuPages[activeMenu]?.src || "";
+  quickOrderImage.src = image;
   quickOrderImage.alt = item.name;
   quickOrderKicker.textContent = `EDEN ${section}`;
   quickOrderName.textContent = item.name;
@@ -993,9 +1020,12 @@ function addCurrentQuickOrderToBasket() {
 }
 
 function addToBasket(name, image = "") {
-  const existing = basketLines.get(name) || { count: 0, image };
+  const safeImage = resolveBasketImage(name, image);
+  const existing = basketLines.get(name) || { count: 0, image: safeImage };
   existing.count += 1;
-  existing.image = existing.image || image;
+  if (!existing.image || isMenuFallbackImage(existing.image)) {
+    existing.image = safeImage;
+  }
   basketLines.set(name, existing);
   renderBasket();
   basket.classList.add("basket-pulse");
