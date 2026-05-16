@@ -424,6 +424,12 @@ button {
   transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease;
 }
 
+.menu-screen.is-preparing .food-page-art,
+.section-screen.is-preparing .section-page-art,
+.section-screen.is-preparing .section-scroll-stack {
+  opacity: 0;
+}
+
 .section-scroll-stack {
   inset: 0;
   z-index: 1;

@@ -6,6 +6,7 @@ const sectionName = document.querySelector("[data-section-name]");
 const sectionEyebrow = document.querySelector("[data-section-fallback] .eyebrow");
 const sectionDescription = document.querySelector("[data-section-fallback] p:last-child");
 const menuArt = document.querySelector("[data-menu-art]");
+const menuScreen = document.querySelector(".menu-screen");
 const sectionScreen = document.querySelector(".section-screen");
 const sectionArt = document.querySelector("[data-section-art]");
 const sectionScrollStack = document.querySelector("[data-section-scroll-stack]");
@@ -37,78 +38,78 @@ const basketEmpty = document.querySelector("[data-basket-empty]");
 
 const sectionPages = {
   "Main Course": {
-    src: "assets/main-course-page-4k.png",
+    src: "assets/main-course-page-4k.webp",
     alt: "EDEN main course page"
   },
   Coffees: {
-    src: "assets/coffees-page-4k.png",
+    src: "assets/coffees-page-4k.webp",
     alt: "EDEN coffees page",
     aspect: "four-three"
   },
   "Hot Teas": {
-    src: "assets/hot-teas-page-4k.png",
+    src: "assets/hot-teas-page-4k.webp",
     alt: "EDEN hot teas page",
     aspect: "two-three"
   },
   "Iced Teas": {
-    src: "assets/iced-teas-page-4k.png",
+    src: "assets/iced-teas-page-4k.webp",
     alt: "EDEN iced teas page",
     aspect: "two-three"
   },
   Milkshakes: {
-    src: "assets/milkshakes-page-4k.png",
+    src: "assets/milkshakes-page-4k.webp",
     alt: "EDEN milkshakes page",
     aspect: "four-three"
   },
   Lemonades: {
-    src: "assets/lemonades-page-4k.png",
+    src: "assets/lemonades-page-4k.webp",
     alt: "EDEN lemonades page",
     aspect: "two-three"
   },
   "Soft Drinks": {
-    src: "assets/soft-drinks-page-4k.png",
+    src: "assets/soft-drinks-page-4k.webp",
     alt: "EDEN soft drinks page",
     aspect: "four-three"
   },
   Salads: {
-    src: "assets/salads-page-4k.png",
+    src: "assets/salads-page-4k.webp",
     alt: "EDEN salads page"
   },
   Sides: {
-    src: "assets/sides-page-4k.png",
+    src: "assets/sides-page-4k.webp",
     alt: "EDEN sides page"
   },
   Appetizers: {
-    src: "assets/appetizers-page-4k.png",
+    src: "assets/appetizers-page-4k.webp",
     alt: "EDEN appetizers page"
   },
   Burgers: {
-    src: "assets/burgers-page-4k.png",
+    src: "assets/burgers-page-4k.webp",
     alt: "EDEN burgers page"
   },
   Shawarma: {
-    src: "assets/shawarma-coming-soon-4k.png",
+    src: "assets/shawarma-coming-soon-4k.webp",
     alt: "EDEN shawarma coming soon page"
   },
   Specials: {
-    src: "assets/specials-coming-soon-4k.png",
+    src: "assets/specials-coming-soon-4k.webp",
     alt: "EDEN specials coming soon page"
   },
   "Heavy Blend": {
-    src: "assets/heavy-blend-page-4k.png",
+    src: "assets/heavy-blend-page-4k.webp",
     alt: "EDEN heavy blend hookah page"
   },
   "Balanced Blend": {
-    src: "assets/balanced-blend-page-4k.png",
+    src: "assets/balanced-blend-page-4k.webp",
     alt: "EDEN balanced blend hookah page"
   },
   "Light & Smooth Blend": {
-    src: "assets/light-page-4k.png",
+    src: "assets/light-page-4k.webp",
     alt: "EDEN light and smooth blend hookah page"
   },
   "Signature Mix": {
-    src: "assets/signature-mix-page-4k.png",
-    pages: ["assets/signature-mix-page-4k.png", "assets/signature-mix-page2-4k.png"],
+    src: "assets/signature-mix-page-4k.webp",
+    pages: ["assets/signature-mix-page-4k.webp", "assets/signature-mix-page2-4k.webp"],
     alt: "EDEN signature mix hookah page",
     aspect: "two-three",
     needsBackOverlay: true
@@ -130,22 +131,22 @@ const overlayBackSections = new Set([
 
 const menuPages = {
   food: {
-    src: "assets/food-menu-page-clean-4k.png",
+    src: "assets/food-menu-page-clean-4k.webp",
     alt: "EDEN food menu page",
     defaultSection: "Main Course"
   },
   drinks: {
-    src: "assets/drinks-menu-page-clean-4k.png",
+    src: "assets/drinks-menu-page-clean-4k.webp",
     alt: "EDEN drinks menu page",
     defaultSection: "Coffees"
   },
   hookah: {
-    src: "assets/hookah-page-4k.png",
+    src: "assets/hookah-page-4k.webp",
     alt: "EDEN hookah menu page",
     defaultSection: "Hookah"
   },
   desserts: {
-    src: "assets/desserts-page-4k.png",
+    src: "assets/desserts-page-4k.webp",
     alt: "EDEN desserts page",
     defaultSection: "Desserts",
     aspect: "four-three"
@@ -177,7 +178,7 @@ const itemGroups = {
       id: "rib-eye-steak",
       name: "Rib Eye Steak",
       price: "$34.99",
-      image: "assets/detail-main-steak-4k.png",
+      image: "assets/detail-main-steak-4k.webp",
       description: "Premium rib eye steak grilled with roasted vegetables, herbs, and Eden steak jus.",
       ingredients: ["rib eye steak", "rosemary", "zucchini", "mushrooms", "peppers", "potatoes", "Eden jus"],
       hotspot: { x: 4, y: 25.8, w: 92, h: 33.8 }
@@ -186,7 +187,7 @@ const itemGroups = {
       id: "grilled-sea-bass",
       name: "Grilled Sea Bass",
       price: "$34.99",
-      image: "assets/detail-main-seabass-4k.png",
+      image: "assets/detail-main-seabass-4k.webp",
       description: "Whole sea bass grilled with charred lemon, asparagus, greens, and cherry tomatoes.",
       ingredients: ["whole sea bass", "charred lemon", "asparagus", "greens", "cherry tomatoes", "olive oil"],
       hotspot: { x: 4, y: 61.4, w: 92, h: 33.8 }
@@ -197,7 +198,7 @@ const itemGroups = {
       id: "eden-salad",
       name: "Eden Salad",
       price: "$19.00",
-      image: "assets/detail-salad-eden-4k.png",
+      image: "assets/detail-salad-eden-4k.webp",
       description: "Shrimp, greens, feta, almonds, cherry tomatoes, herbs, and Eden balsamic glaze.",
       ingredients: ["shrimp", "mixed greens", "feta", "almonds", "cherry tomatoes", "herbs", "balsamic glaze"],
       hotspot: { x: 2.2, y: 25.2, w: 46.5, h: 27.4 }
@@ -206,7 +207,7 @@ const itemGroups = {
       id: "salmon-splash-salad",
       name: "Salmon Splash Salad",
       price: "$16.50",
-      image: "assets/detail-salad-salmon-splash-4k.png",
+      image: "assets/detail-salad-salmon-splash-4k.webp",
       description: "Grilled salmon, feta, olives, cucumbers, tomatoes, greens, and citrus herb dressing.",
       ingredients: ["grilled salmon", "feta", "olives", "cucumber", "tomatoes", "greens", "citrus herb dressing"],
       hotspot: { x: 51.2, y: 25.2, w: 46.6, h: 27.4 }
@@ -215,7 +216,7 @@ const itemGroups = {
       id: "caesar-salad",
       name: "Caesar Salad",
       price: "$17.50",
-      image: "assets/detail-salad-caesar-4k.png",
+      image: "assets/detail-salad-caesar-4k.webp",
       description: "Grilled chicken, crisp romaine, parmesan, cherry tomatoes, croutons, and Caesar dressing.",
       ingredients: ["grilled chicken", "romaine", "parmesan", "cherry tomatoes", "croutons", "Caesar dressing"],
       hotspot: { x: 2.2, y: 53.8, w: 46.5, h: 26.8 }
@@ -224,7 +225,7 @@ const itemGroups = {
       id: "crispy-eggplant-salad",
       name: "Crispy Eggplant Salad",
       price: "$13.50",
-      image: "assets/detail-salad-eggplant-4k.png",
+      image: "assets/detail-salad-eggplant-4k.webp",
       description: "Crispy eggplant, roasted peppers, fresh herbs, cheese, greens, sesame, and sweet glaze.",
       ingredients: ["crispy eggplant", "roasted peppers", "fresh herbs", "cheese", "greens", "sesame", "sweet glaze"],
       hotspot: { x: 51.2, y: 53.8, w: 46.6, h: 26.8 }
@@ -235,7 +236,7 @@ const itemGroups = {
       id: "eden-cheese-fries",
       name: "Eden Cheese Fries",
       price: "$6.99",
-      image: "assets/detail-side-cheese-fries-4k.png",
+      image: "assets/detail-side-cheese-fries-4k.webp",
       description: "Crispy fries topped with melted cheese and served with Eden dipping sauce.",
       hotspot: { x: 2.5, y: 25.7, w: 95, h: 13.7 }
     },
@@ -243,7 +244,7 @@ const itemGroups = {
       id: "french-fries",
       name: "French Fries",
       price: "$5.99",
-      image: "assets/detail-side-fries-4k.png",
+      image: "assets/detail-side-fries-4k.webp",
       description: "Classic golden french fries served crisp with house ketchup.",
       hotspot: { x: 2.5, y: 39.9, w: 95, h: 13.7 }
     },
@@ -251,7 +252,7 @@ const itemGroups = {
       id: "garlic-fries",
       name: "Garlic Fries",
       price: "$6.99",
-      image: "assets/detail-side-garlic-fries-4k.png",
+      image: "assets/detail-side-garlic-fries-4k.webp",
       description: "French fries tossed with garlic, herbs, and parmesan.",
       hotspot: { x: 2.5, y: 54, w: 95, h: 13.7 }
     },
@@ -259,7 +260,7 @@ const itemGroups = {
       id: "grilled-vegetables",
       name: "Grilled Vegetables",
       price: "$6.50",
-      image: "assets/detail-side-grilled-vegetables-4k.png",
+      image: "assets/detail-side-grilled-vegetables-4k.webp",
       description: "Seasonal vegetables grilled with herbs and olive oil.",
       hotspot: { x: 2.5, y: 68.1, w: 95, h: 13.7 }
     },
@@ -267,7 +268,7 @@ const itemGroups = {
       id: "rice",
       name: "Rice",
       price: "$3.99",
-      image: "assets/detail-side-rice-4k.png",
+      image: "assets/detail-side-rice-4k.webp",
       description: "Steamed white rice finished with parsley and cracked pepper.",
       hotspot: { x: 2.5, y: 82.2, w: 95, h: 13.7 }
     }
@@ -277,7 +278,7 @@ const itemGroups = {
       id: "wings-bbq-buffalo",
       name: "Wings BBQ, Blu, Buffalo",
       price: "$9.50",
-      image: "assets/detail-app-wings-4k.png",
+      image: "assets/detail-app-wings-4k.webp",
       description: "Crispy chicken wings served with celery, carrots, slaw, and choice of BBQ, blue cheese, or buffalo sauce.",
       ingredients: ["chicken wings", "sesame", "celery", "carrots", "slaw", "BBQ sauce", "buffalo sauce"],
       hotspot: { x: 9.6, y: 4.5, w: 80.8, h: 16.4 }
@@ -286,7 +287,7 @@ const itemGroups = {
       id: "fried-mixed-seafood",
       name: "Fried Mixed Seafood",
       price: "$19.99",
-      image: "assets/detail-app-seafood-mix-4k.png",
+      image: "assets/detail-app-seafood-mix-4k.webp",
       description: "Assorted fried seafood platter with lemon and house dipping sauce.",
       ingredients: ["shrimp", "calamari", "fish", "lemon", "mixed greens", "house sauce"],
       hotspot: { x: 9.6, y: 21.4, w: 80.8, h: 15.8 }
@@ -295,7 +296,7 @@ const itemGroups = {
       id: "dynamite-shrimp",
       name: "Dynamite Shrimp",
       price: "$14.50",
-      image: "assets/detail-app-dynamite-shrimp-4k.png",
+      image: "assets/detail-app-dynamite-shrimp-4k.webp",
       description: "Crispy shrimp tossed in spicy dynamite sauce with sesame and citrus.",
       ingredients: ["crispy shrimp", "dynamite sauce", "sesame", "lettuce", "lemon"],
       hotspot: { x: 9.6, y: 37.8, w: 80.8, h: 15.6 }
@@ -304,7 +305,7 @@ const itemGroups = {
       id: "fried-mozzarella",
       name: "Fried Mozzarella",
       price: "$9.50",
-      image: "assets/detail-app-mozzarella-4k.png",
+      image: "assets/detail-app-mozzarella-4k.webp",
       description: "Golden fried mozzarella sticks served with tomato sauce.",
       ingredients: ["mozzarella", "seasoned crust", "tomato sauce", "herbs"],
       hotspot: { x: 9.6, y: 54, w: 80.8, h: 15.6 }
@@ -313,7 +314,7 @@ const itemGroups = {
       id: "fried-calamari",
       name: "Fried Calamari",
       price: "$11.50",
-      image: "assets/detail-app-calamari-4k.png",
+      image: "assets/detail-app-calamari-4k.webp",
       description: "Crispy fried calamari rings with lemon and dipping sauces.",
       ingredients: ["calamari", "lemon", "mixed greens", "spiced breading", "dipping sauce"],
       hotspot: { x: 9.6, y: 70.1, w: 80.8, h: 15.6 }
@@ -322,7 +323,7 @@ const itemGroups = {
       id: "chicken-nuggets",
       name: "Chicken Nuggets",
       price: "$7.99",
-      image: "assets/detail-app-chicken-nuggets-4k.png",
+      image: "assets/detail-app-chicken-nuggets-4k.webp",
       description: "Crispy golden chicken nuggets with house ketchup.",
       ingredients: ["chicken", "golden crust", "ketchup", "seasoning"],
       hotspot: { x: 9.6, y: 86.2, w: 80.8, h: 11.2 }
@@ -333,7 +334,7 @@ const itemGroups = {
       id: "eden-burger-cheese",
       name: "Eden Burger with Cheese on Top",
       price: "$16.99",
-      image: "assets/detail-burger-cheese-4k.png",
+      image: "assets/detail-burger-cheese-4k.webp",
       description: "Premium beef, melted cheddar crown, fresh lettuce, tomato, onion, Eden sauce, and fries.",
       ingredients: ["beef patty", "cheddar cheese", "lettuce", "tomato", "onion", "Eden sauce", "fries"],
       hotspot: { x: 2.2, y: 26.3, w: 95.8, h: 23.6 }
@@ -342,7 +343,7 @@ const itemGroups = {
       id: "chicken-burger",
       name: "Chicken Burger",
       price: "$14.99",
-      image: "assets/detail-burger-chicken-4k.png",
+      image: "assets/detail-burger-chicken-4k.webp",
       description: "Crispy chicken, creamy slaw, toasted brioche, fries, and house ketchup.",
       ingredients: ["crispy chicken", "creamy slaw", "brioche bun", "fries", "ketchup"],
       hotspot: { x: 2.2, y: 51.4, w: 95.8, h: 22.3 }
@@ -351,7 +352,7 @@ const itemGroups = {
       id: "eden-burger",
       name: "Eden Burger",
       price: "$14.99",
-      image: "assets/detail-burger-eden-4k.png",
+      image: "assets/detail-burger-eden-4k.webp",
       description: "Beef patty, cheddar, lettuce, tomato, red onion, signature Eden sauce, and fries.",
       ingredients: ["beef patty", "cheddar", "lettuce", "tomato", "red onion", "Eden sauce", "fries"],
       hotspot: { x: 2.2, y: 74.7, w: 95.8, h: 21.8 }
@@ -555,10 +556,40 @@ function warmImages(srcs) {
   });
 }
 
+function setDecodedImage(img, src, alt = "") {
+  img.decoding = "async";
+  img.src = src;
+  img.alt = alt;
+  if (img.decode) {
+    return img.decode().catch(() => true);
+  }
+  if (img.complete) {
+    return Promise.resolve(true);
+  }
+  return new Promise((resolve) => {
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+  });
+}
+
 function warmMenuImages() {
   const menuImages = Object.values(menuPages).map((page) => page.src);
-  const sectionImages = Object.values(sectionPages).flatMap((page) => page.pages || [page.src]);
-  warmImages([...menuImages, ...sectionImages]);
+  warmImages(menuImages);
+}
+
+function sectionImageSources(name) {
+  const page = sectionPages[name];
+  return page ? page.pages || [page.src] : [];
+}
+
+function warmSectionsForMenu(menu) {
+  const sectionImages = (menuSectionNames[menu] || []).flatMap(sectionImageSources);
+  const dessertImages = menu === "desserts" ? (addButtonLayouts.Desserts || []).map((item) => item.image) : [];
+  warmImages([...sectionImages, ...dessertImages]);
+}
+
+function preloadSection(name) {
+  warmImages(sectionImageSources(name));
 }
 
 function warmDetailImages() {
@@ -579,20 +610,25 @@ async function openMenu(category) {
   }
 
   activeMenu = menuPages[category] ? category : "food";
+  menuScreen.classList.add("is-preparing");
   await preloadImage(menuPages[activeMenu].src);
   if (token !== navigationToken) {
     return;
   }
-  menuArt.src = menuPages[activeMenu].src;
-  menuArt.alt = menuPages[activeMenu].alt;
+  await setDecodedImage(menuArt, menuPages[activeMenu].src, menuPages[activeMenu].alt);
+  if (token !== navigationToken) {
+    return;
+  }
   shell.dataset.menuAspect = menuPages[activeMenu].aspect || "two-three";
   shell.dataset.activeMenu = activeMenu;
+  menuScreen.classList.remove("is-preparing");
   runTransition();
   setTimeout(() => {
     if (token !== navigationToken) {
       return;
     }
     shell.dataset.screen = "menu";
+    warmSectionsForMenu(activeMenu);
     renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
     closeQuickOrder();
     closeBasketPanel();
@@ -601,6 +637,7 @@ async function openMenu(category) {
 
 function closeMenu() {
   navigationToken += 1;
+  menuScreen.classList.remove("is-preparing");
   runTransition();
   shell.dataset.screen = "opening";
   clearMenuAddButtons();
@@ -610,6 +647,13 @@ function closeMenu() {
 
 async function openSection(name) {
   const token = ++navigationToken;
+  sectionScreen.classList.add("is-preparing");
+  clearAddButtons();
+  clearItemHotspots();
+  sectionArt.removeAttribute("src");
+  sectionArt.alt = "";
+  sectionScrollStack.replaceChildren();
+  sectionScrollStack.setAttribute("aria-hidden", "true");
   activeSection = name || menuPages[activeMenu].defaultSection;
   const comingSoon = comingSoonSections[activeSection];
   sectionName.textContent = comingSoon?.title || activeSection;
@@ -624,32 +668,38 @@ async function openSection(name) {
   sectionScreen.classList.toggle("is-coming-soon", Boolean(comingSoon));
   sectionScreen.classList.toggle("needs-back-overlay", Boolean(page?.needsBackOverlay || overlayBackSections.has(name)));
   sectionScreen.classList.remove("has-scroll");
-  sectionScrollStack.replaceChildren();
-  sectionScrollStack.setAttribute("aria-hidden", "true");
   if (page) {
     warmImages(pageImages);
     if (page.pages?.length) {
       sectionScreen.classList.add("has-scroll");
       sectionScrollStack.setAttribute("aria-hidden", "false");
-      page.pages.forEach((src, index) => {
+      const scrollImages = page.pages.map((src, index) => {
         const img = document.createElement("img");
-        img.src = src;
-        img.alt = index === 0 ? page.alt : `${page.alt} page ${index + 1}`;
         img.className = "section-scroll-art";
-        sectionScrollStack.appendChild(img);
+        return { img, src, alt: index === 0 ? page.alt : `${page.alt} page ${index + 1}` };
       });
+      await Promise.all(scrollImages.map(({ img, src, alt }) => setDecodedImage(img, src, alt)));
+      if (token !== navigationToken) {
+        return;
+      }
+      scrollImages.forEach(({ img }) => sectionScrollStack.appendChild(img));
       sectionScrollStack.scrollTop = 0;
     }
-    sectionArt.src = page.src;
-    sectionArt.alt = page.alt;
+    await setDecodedImage(sectionArt, page.src, page.alt);
+    if (token !== navigationToken) {
+      return;
+    }
     shell.dataset.sectionAspect = page.aspect || "two-three";
     sectionScreen.classList.add("has-image");
   } else {
-    sectionArt.src = menuPages[activeMenu].src;
-    sectionArt.alt = "";
+    await setDecodedImage(sectionArt, menuPages[activeMenu].src, "");
+    if (token !== navigationToken) {
+      return;
+    }
     shell.dataset.sectionAspect = menuPages[activeMenu].aspect || "two-three";
     sectionScreen.classList.remove("has-image");
   }
+  sectionScreen.classList.remove("is-preparing");
   runTransition();
   setTimeout(() => {
     if (token !== navigationToken) {
@@ -665,6 +715,7 @@ async function openSection(name) {
 
 function closeSection() {
   navigationToken += 1;
+  sectionScreen.classList.remove("is-preparing");
   runTransition();
   shell.dataset.screen = activeSection === "Specials" ? "opening" : "menu";
   clearAddButtons();
@@ -964,7 +1015,7 @@ function renderBasket() {
     const label = document.createElement("span");
     const qty = document.createElement("b");
     thumb.className = "basket-item-thumb";
-    thumb.src = line.image || "assets/eden-opening-clean-4k.png";
+    thumb.src = line.image || "assets/eden-opening-clean-4k.webp";
     thumb.alt = "";
     copy.className = "basket-item-copy";
     label.textContent = name;
@@ -1040,6 +1091,10 @@ function drawSparks(time) {
 
 document.querySelectorAll("[data-open-menu]").forEach((button) => {
   button.addEventListener("click", () => openMenu(button.dataset.category));
+  button.addEventListener("pointerenter", () => {
+    const category = menuPages[button.dataset.category] ? button.dataset.category : "food";
+    warmImages([menuPages[category]?.src]);
+  });
 });
 
 basketButton.addEventListener("click", toggleBasketPanel);
@@ -1060,6 +1115,12 @@ shell.addEventListener("pointerdown", onSwipeStart);
 shell.addEventListener("pointerup", onSwipeEnd);
 
 document.querySelectorAll("[data-open-section]").forEach((button, index) => {
+  const warmTarget = () => {
+    const sectionNameForMenu = menuSectionNames[activeMenu]?.[index] || button.dataset.openSection;
+    preloadSection(sectionNameForMenu);
+  };
+  button.addEventListener("pointerenter", warmTarget);
+  button.addEventListener("touchstart", warmTarget, { passive: true });
   button.addEventListener("click", () => {
     const sectionNameForMenu = menuSectionNames[activeMenu]?.[index] || button.dataset.openSection;
     openSection(sectionNameForMenu);
