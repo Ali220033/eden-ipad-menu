@@ -131,7 +131,7 @@ const overlayBackSections = new Set([
 
 const menuPages = {
   food: {
-    src: "assets/food-menu-page-clean-4k.webp",
+    src: "assets/food-menu-page-4k.webp",
     alt: "EDEN food menu page",
     defaultSection: "Main Course"
   },
