@@ -1211,8 +1211,7 @@ resizeCanvas();
 requestAnimationFrame(drawSparks);
 
 const warmWhenIdle = window.requestIdleCallback || ((callback) => setTimeout(callback, 350));
-warmMenuImages();
-setTimeout(() => warmWhenIdle(warmDetailImages), 650);
+warmWhenIdle(warmMenuImages);
 
 window.addEventListener("resize", resizeCanvas, { passive: true });
 window.addEventListener("orientationchange", resizeCanvas, { passive: true });
