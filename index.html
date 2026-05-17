@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#050403">
     <title>EDEN iPad Menu</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260517-order3">
   </head>
   <body>
     <main class="ipad-shell" data-screen="opening">
@@ -96,12 +96,14 @@
             <span>Special Instructions</span>
             <textarea data-item-instructions rows="3" placeholder="Allergies, sauce on side, no onions..."></textarea>
           </label>
-          <div class="item-quantity" aria-label="Quantity">
-            <button type="button" data-qty-minus aria-label="Decrease quantity">-</button>
-            <span data-item-qty>1</span>
-            <button type="button" data-qty-plus aria-label="Increase quantity">&gt;</button>
+          <div class="item-actions">
+            <div class="item-quantity" aria-label="Quantity">
+              <button type="button" data-qty-minus aria-label="Decrease quantity">-</button>
+              <span data-item-qty>1</span>
+              <button type="button" data-qty-plus aria-label="Increase quantity">&gt;</button>
+            </div>
+            <button class="item-order-button" type="button" data-add-detail>Add to Order</button>
           </div>
-          <button class="item-order-button" type="button" data-add-detail>Add to Order</button>
         </div>
         <div class="item-selector" data-item-selector aria-label="Select item"></div>
       </section>
@@ -143,12 +145,32 @@
           <div class="basket-title">Basket</div>
           <p class="basket-empty" data-basket-empty>No items yet</p>
           <ul class="basket-items" data-basket-items></ul>
+          <button class="basket-view-order" type="button" data-view-order hidden>View Order</button>
         </div>
       </aside>
+
+      <section class="order-review-screen" data-order-review aria-label="Selected order" hidden>
+        <button class="order-review-backdrop" type="button" data-close-order-review aria-label="Close order review"></button>
+        <div class="order-review-card" role="dialog" aria-modal="true" aria-labelledby="order-review-title">
+          <div class="order-review-header">
+            <div>
+              <p>EDEN Restaurant & Lounge</p>
+              <h2 id="order-review-title">Selected Order</h2>
+            </div>
+            <button class="order-review-close" type="button" data-close-order-review aria-label="Close order review"></button>
+          </div>
+          <p class="order-review-empty" data-order-review-empty>No items yet</p>
+          <ul class="order-review-items" data-order-review-items></ul>
+          <div class="order-review-footer">
+            <span data-order-review-total>0 items selected</span>
+            <button type="button" data-close-order-review>Back to Menu</button>
+          </div>
+        </div>
+      </section>
 
       <div class="page-veil" aria-hidden="true"></div>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20260517-order3"></script>
   </body>
 </html>

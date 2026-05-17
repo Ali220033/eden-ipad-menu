@@ -35,6 +35,11 @@ const basketButton = document.querySelector(".basket-button");
 const basketCount = document.querySelector("[data-basket-count]");
 const basketItems = document.querySelector("[data-basket-items]");
 const basketEmpty = document.querySelector("[data-basket-empty]");
+const viewOrderButton = document.querySelector("[data-view-order]");
+const orderReview = document.querySelector("[data-order-review]");
+const orderReviewItems = document.querySelector("[data-order-review-items]");
+const orderReviewEmpty = document.querySelector("[data-order-review-empty]");
+const orderReviewTotal = document.querySelector("[data-order-review-total]");
 const callWaiterButton = document.querySelector("[data-call-waiter]");
 const callWaiterLabel = document.querySelector("[data-call-waiter-label]");
 
@@ -693,6 +698,7 @@ async function openMenu(category) {
     warmSectionsForMenu(activeMenu);
     renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
     closeQuickOrder();
+    closeOrderReview();
     closeBasketPanel();
   }, transitionSwapDelay);
 }
@@ -704,6 +710,7 @@ function closeMenu() {
   shell.dataset.screen = "opening";
   clearMenuAddButtons();
   closeQuickOrder();
+  closeOrderReview();
   closeBasketPanel();
 }
 
@@ -771,6 +778,7 @@ async function openSection(name) {
     clearAddButtons();
     renderItemHotspots(name);
     closeQuickOrder();
+    closeOrderReview();
     closeBasketPanel();
   }, transitionSwapDelay);
 }
@@ -786,6 +794,7 @@ function closeSection() {
   sectionScrollStack.replaceChildren();
   sectionScrollStack.setAttribute("aria-hidden", "true");
   closeQuickOrder();
+  closeOrderReview();
   closeBasketPanel();
 }
 
@@ -794,6 +803,7 @@ function closeItemDetail() {
   runTransition("detail");
   shell.dataset.screen = "section";
   closeQuickOrder();
+  closeOrderReview();
   closeBasketPanel();
 }
 
@@ -824,6 +834,10 @@ async function openItemDetail(groupName, itemId) {
 }
 
 function goBack() {
+  if (orderReview?.classList.contains("is-open")) {
+    closeOrderReview();
+    return;
+  }
   if (quickOrder?.classList.contains("is-open")) {
     closeQuickOrder();
     return;
@@ -1068,28 +1082,61 @@ function addToBasket(name, image = "") {
   setTimeout(() => basket.classList.remove("basket-pulse"), 420);
 }
 
+function splitOrderName(name) {
+  const [title, ...noteParts] = name.split(" - ");
+  return {
+    title,
+    note: noteParts.join(" - ")
+  };
+}
+
+function removeBasketLine(name) {
+  basketLines.delete(name);
+  renderBasket();
+}
+
 function renderBasket() {
   const total = Array.from(basketLines.values()).reduce((sum, line) => sum + line.count, 0);
   basketCount.textContent = total;
   basketEmpty.hidden = total > 0;
+  if (viewOrderButton) {
+    viewOrderButton.hidden = total === 0;
+  }
   basketItems.replaceChildren();
 
   basketLines.forEach((line, name) => {
     const item = document.createElement("li");
     const thumb = document.createElement("img");
-    const copy = document.createElement("span");
+    const copy = document.createElement("div");
     const label = document.createElement("span");
     const qty = document.createElement("b");
+    const remove = document.createElement("button");
+    const { title, note } = splitOrderName(name);
     thumb.className = "basket-item-thumb";
     thumb.src = line.image || "assets/eden-opening-clean-4k.webp";
     thumb.alt = "";
     copy.className = "basket-item-copy";
-    label.textContent = name;
+    label.textContent = title;
+    if (note) {
+      label.title = note;
+    }
     qty.textContent = `x${line.count}`;
+    remove.className = "basket-item-remove";
+    remove.type = "button";
+    remove.setAttribute("aria-label", `Remove ${title} from basket`);
+    remove.textContent = "×";
+    remove.addEventListener("click", (event) => {
+      event.stopPropagation();
+      removeBasketLine(name);
+    });
     copy.append(label, qty);
-    item.append(thumb, copy);
+    item.append(thumb, copy, remove);
     basketItems.appendChild(item);
   });
+
+  if (orderReview?.classList.contains("is-open")) {
+    renderOrderReview();
+  }
 }
 
 function closeBasketPanel() {
@@ -1102,11 +1149,75 @@ function toggleBasketPanel() {
   basket.classList.toggle("is-open", basketOpen);
 }
 
+function renderOrderReview() {
+  if (!orderReviewItems || !orderReviewTotal) {
+    return;
+  }
+  const total = Array.from(basketLines.values()).reduce((sum, line) => sum + line.count, 0);
+  orderReviewItems.replaceChildren();
+  orderReviewEmpty.hidden = total > 0;
+  orderReviewTotal.textContent = `${total} item${total === 1 ? "" : "s"} selected`;
+
+  basketLines.forEach((line, name) => {
+    const item = document.createElement("li");
+    const thumb = document.createElement("img");
+    const copy = document.createElement("div");
+    const title = document.createElement("span");
+    const note = document.createElement("small");
+    const qty = document.createElement("b");
+    const remove = document.createElement("button");
+    const parts = splitOrderName(name);
+
+    thumb.src = line.image || "assets/eden-opening-clean-4k.webp";
+    thumb.alt = "";
+    title.textContent = parts.title;
+    note.textContent = parts.note || "No special instructions";
+    qty.textContent = `x${line.count}`;
+    remove.type = "button";
+    remove.className = "order-review-remove";
+    remove.setAttribute("aria-label", `Remove ${parts.title} from order`);
+    remove.textContent = "×";
+    remove.addEventListener("click", () => removeBasketLine(name));
+
+    copy.append(title, note);
+    item.append(thumb, copy, qty, remove);
+    orderReviewItems.appendChild(item);
+  });
+
+  if (total === 0) {
+    closeOrderReview();
+  }
+}
+
+function openOrderReview() {
+  if (!orderReview || basketLines.size === 0) {
+    return;
+  }
+  renderOrderReview();
+  closeQuickOrder();
+  closeBasketPanel();
+  orderReview.hidden = false;
+  requestAnimationFrame(() => orderReview.classList.add("is-open"));
+}
+
+function closeOrderReview() {
+  if (!orderReview) {
+    return;
+  }
+  orderReview.classList.remove("is-open");
+  setTimeout(() => {
+    if (!orderReview.classList.contains("is-open")) {
+      orderReview.hidden = true;
+    }
+  }, 220);
+}
+
 function callWaiter() {
   callWaiterButton.classList.add("is-called");
   callWaiterLabel.textContent = "Called";
   callWaiterButton.disabled = true;
   closeBasketPanel();
+  closeOrderReview();
 
   setTimeout(() => {
     callWaiterButton.classList.remove("is-called");
@@ -1177,6 +1288,10 @@ document.querySelectorAll("[data-open-menu]").forEach((button) => {
 });
 
 basketButton.addEventListener("click", toggleBasketPanel);
+viewOrderButton?.addEventListener("click", openOrderReview);
+document.querySelectorAll("[data-close-order-review]").forEach((button) => {
+  button.addEventListener("click", closeOrderReview);
+});
 callWaiterButton.addEventListener("click", callWaiter);
 document.querySelector("[data-back-menu]").addEventListener("click", closeMenu);
 document.querySelector("[data-back-section]").addEventListener("click", closeSection);
