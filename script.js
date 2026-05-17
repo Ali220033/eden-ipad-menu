@@ -143,12 +143,12 @@ const menuPages = {
     defaultSection: "Coffees"
   },
   hookah: {
-    src: "assets/hookah-page-eden-4k.webp",
+    src: "assets/hookah-page-4k.webp",
     alt: "EDEN hookah menu page",
     defaultSection: "Hookah"
   },
   desserts: {
-    src: "assets/desserts-page-eden-4k.webp",
+    src: "assets/desserts-page-4k.webp",
     alt: "EDEN desserts page",
     defaultSection: "Desserts",
     aspect: "four-three"
