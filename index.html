@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#050403">
     <title>EDEN iPad Menu</title>
-    <link rel="stylesheet" href="styles.css?v=20260517-order3">
+    <link rel="stylesheet" href="styles.css?v=20260518-waiter-order2">
   </head>
   <body>
     <main class="ipad-shell" data-screen="opening">
@@ -137,10 +137,6 @@
           <span class="basket-text">Basket</span>
           <span class="basket-count" data-basket-count>0</span>
         </button>
-        <button class="call-waiter-button" type="button" data-call-waiter aria-label="Call waiter">
-          <span class="call-waiter-bell" aria-hidden="true"></span>
-          <span data-call-waiter-label>Call Waiter</span>
-        </button>
         <div class="basket-panel" data-basket-panel>
           <div class="basket-title">Basket</div>
           <p class="basket-empty" data-basket-empty>No items yet</p>
@@ -148,6 +144,11 @@
           <button class="basket-view-order" type="button" data-view-order hidden>View Order</button>
         </div>
       </aside>
+
+      <button class="call-waiter-button" type="button" data-call-waiter aria-label="Call waiter">
+        <span class="call-waiter-bell" aria-hidden="true"></span>
+        <span data-call-waiter-label>Call Waiter</span>
+      </button>
 
       <section class="order-review-screen" data-order-review aria-label="Selected order" hidden>
         <button class="order-review-backdrop" type="button" data-close-order-review aria-label="Close order review"></button>
@@ -171,6 +172,6 @@
       <div class="page-veil" aria-hidden="true"></div>
     </main>
 
-    <script src="script.js?v=20260517-order3"></script>
+    <script src="script.js?v=20260518-waiter-order2"></script>
   </body>
 </html>

@@ -807,6 +807,22 @@ function closeItemDetail() {
   closeBasketPanel();
 }
 
+function returnToOpeningPage() {
+  navigationToken += 1;
+  menuScreen.classList.remove("is-preparing");
+  sectionScreen.classList.remove("is-preparing", "needs-back-overlay", "has-scroll", "is-coming-soon");
+  sectionScrollStack.replaceChildren();
+  sectionScrollStack.setAttribute("aria-hidden", "true");
+  clearMenuAddButtons();
+  clearAddButtons();
+  clearItemHotspots();
+  closeQuickOrder();
+  closeOrderReview();
+  closeBasketPanel();
+  runTransition();
+  shell.dataset.screen = "opening";
+}
+
 async function openItemDetail(groupName, itemId) {
   const token = ++navigationToken;
   const group = itemGroups[groupName] || [];
@@ -1095,6 +1111,56 @@ function removeBasketLine(name) {
   renderBasket();
 }
 
+function changeBasketQuantity(name, delta) {
+  const line = basketLines.get(name);
+  if (!line) {
+    return;
+  }
+  line.count += delta;
+  if (line.count <= 0) {
+    basketLines.delete(name);
+  } else {
+    basketLines.set(name, line);
+  }
+  renderBasket();
+}
+
+function createBasketQuantityControl(name, count, variant) {
+  const control = document.createElement("div");
+  const minus = document.createElement("button");
+  const qty = document.createElement("b");
+  const plus = document.createElement("button");
+  const isReview = variant === "review";
+  const controlClass = isReview ? "order-review-quantity" : "basket-item-quantity";
+  const buttonClass = isReview ? "order-review-qty-button" : "basket-qty-button";
+  const { title } = splitOrderName(name);
+
+  control.className = controlClass;
+  control.setAttribute("aria-label", `Quantity for ${title}`);
+  minus.type = "button";
+  minus.className = buttonClass;
+  minus.setAttribute("aria-label", `Decrease ${title} quantity`);
+  minus.textContent = "-";
+  minus.addEventListener("click", (event) => {
+    event.stopPropagation();
+    changeBasketQuantity(name, -1);
+  });
+
+  qty.textContent = count;
+
+  plus.type = "button";
+  plus.className = buttonClass;
+  plus.setAttribute("aria-label", `Increase ${title} quantity`);
+  plus.textContent = "+";
+  plus.addEventListener("click", (event) => {
+    event.stopPropagation();
+    changeBasketQuantity(name, 1);
+  });
+
+  control.append(minus, qty, plus);
+  return control;
+}
+
 function renderBasket() {
   const total = Array.from(basketLines.values()).reduce((sum, line) => sum + line.count, 0);
   basketCount.textContent = total;
@@ -1109,7 +1175,7 @@ function renderBasket() {
     const thumb = document.createElement("img");
     const copy = document.createElement("div");
     const label = document.createElement("span");
-    const qty = document.createElement("b");
+    const qty = createBasketQuantityControl(name, line.count, "basket");
     const remove = document.createElement("button");
     const { title, note } = splitOrderName(name);
     thumb.className = "basket-item-thumb";
@@ -1120,7 +1186,6 @@ function renderBasket() {
     if (note) {
       label.title = note;
     }
-    qty.textContent = `x${line.count}`;
     remove.className = "basket-item-remove";
     remove.type = "button";
     remove.setAttribute("aria-label", `Remove ${title} from basket`);
@@ -1129,8 +1194,8 @@ function renderBasket() {
       event.stopPropagation();
       removeBasketLine(name);
     });
-    copy.append(label, qty);
-    item.append(thumb, copy, remove);
+    copy.append(label);
+    item.append(thumb, copy, qty, remove);
     basketItems.appendChild(item);
   });
 
@@ -1164,7 +1229,7 @@ function renderOrderReview() {
     const copy = document.createElement("div");
     const title = document.createElement("span");
     const note = document.createElement("small");
-    const qty = document.createElement("b");
+    const qty = createBasketQuantityControl(name, line.count, "review");
     const remove = document.createElement("button");
     const parts = splitOrderName(name);
 
@@ -1172,7 +1237,6 @@ function renderOrderReview() {
     thumb.alt = "";
     title.textContent = parts.title;
     note.textContent = parts.note || "No special instructions";
-    qty.textContent = `x${line.count}`;
     remove.type = "button";
     remove.className = "order-review-remove";
     remove.setAttribute("aria-label", `Remove ${parts.title} from order`);
@@ -1216,8 +1280,7 @@ function callWaiter() {
   callWaiterButton.classList.add("is-called");
   callWaiterLabel.textContent = "Called";
   callWaiterButton.disabled = true;
-  closeBasketPanel();
-  closeOrderReview();
+  returnToOpeningPage();
 
   setTimeout(() => {
     callWaiterButton.classList.remove("is-called");
