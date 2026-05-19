@@ -45,53 +45,53 @@ const callWaiterLabel = document.querySelector("[data-call-waiter-label]");
 
 const sectionPages = {
   "Main Course": {
-    src: "assets/main-course-new-page-4k.png",
+    src: "assets/main-course-new-page-4k.webp",
     alt: "EDEN main course page"
   },
   Coffees: {
-    src: "assets/coffees-new-page-4k.png",
+    src: "assets/coffees-new-page-4k.webp",
     alt: "EDEN coffees page",
     aspect: "four-three"
   },
   "Hot Teas": {
-    src: "assets/hot-teas-new-page-4k.png",
+    src: "assets/hot-teas-new-page-4k.webp",
     alt: "EDEN hot teas page",
     aspect: "two-three"
   },
   "Iced Teas": {
-    src: "assets/iced-teas-new-page2-4k.png",
+    src: "assets/iced-teas-new-page2-4k.webp",
     alt: "EDEN iced teas page",
     aspect: "two-three"
   },
   Milkshakes: {
-    src: "assets/milkshakes-new-page-4k.png",
+    src: "assets/milkshakes-new-page-4k.webp",
     alt: "EDEN milkshakes page",
     aspect: "four-three"
   },
   Lemonades: {
-    src: "assets/lemonades-new-page-4k.png",
+    src: "assets/lemonades-new-page-4k.webp",
     alt: "EDEN lemonades page",
     aspect: "two-three"
   },
   "Soft Drinks": {
-    src: "assets/soft-drinks-new-page-4k.png",
+    src: "assets/soft-drinks-new-page-4k.webp",
     alt: "EDEN soft drinks page",
     aspect: "four-three"
   },
   Salads: {
-    src: "assets/salads-new-page-4k.png",
+    src: "assets/salads-new-page-4k.webp",
     alt: "EDEN salads page"
   },
   Sides: {
-    src: "assets/sides-new-page-4k.png",
+    src: "assets/sides-new-page-4k.webp",
     alt: "EDEN sides page"
   },
   Appetizers: {
-    src: "assets/appetizers-new-page-4k.png",
+    src: "assets/appetizers-new-page-4k.webp",
     alt: "EDEN appetizers page"
   },
   Burgers: {
-    src: "assets/burgers-new-page-4k.png",
+    src: "assets/burgers-new-page-4k.webp",
     alt: "EDEN burgers page"
   },
   Shawarma: {
@@ -143,7 +143,7 @@ const menuPages = {
     defaultSection: "Main Course"
   },
   drinks: {
-    src: "assets/iced-teas-new-page-4k.png",
+    src: "assets/drinks-menu-new-page-4k.webp",
     alt: "EDEN drinks menu page",
     defaultSection: "Coffees"
   },
@@ -153,7 +153,7 @@ const menuPages = {
     defaultSection: "Hookah"
   },
   desserts: {
-    src: "assets/desserts-new-page-4k.png",
+    src: "assets/desserts-new-page-4k.webp",
     alt: "EDEN desserts page",
     defaultSection: "Desserts",
     aspect: "four-three"
