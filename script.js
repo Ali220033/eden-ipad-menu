@@ -107,7 +107,7 @@ const sectionPages = {
     alt: "EDEN heavy blend hookah page"
   },
   "Balanced Blend": {
-    src: "assets/balanced-blend-page-4k.webp",
+    src: "assets/balanced-blend-page-4k.webp?v=20260519-balanced",
     alt: "EDEN balanced blend hookah page"
   },
   "Light & Smooth Blend": {
