@@ -45,53 +45,53 @@ const callWaiterLabel = document.querySelector("[data-call-waiter-label]");
 
 const sectionPages = {
   "Main Course": {
-    src: "assets/main-course-page-4k.webp",
+    src: "assets/main-course-new-page-4k.png",
     alt: "EDEN main course page"
   },
   Coffees: {
-    src: "assets/coffees-page-4k.webp",
+    src: "assets/coffees-new-page-4k.png",
     alt: "EDEN coffees page",
     aspect: "four-three"
   },
   "Hot Teas": {
-    src: "assets/hot-teas-page-4k.webp",
+    src: "assets/hot-teas-new-page-4k.png",
     alt: "EDEN hot teas page",
     aspect: "two-three"
   },
   "Iced Teas": {
-    src: "assets/iced-teas-page-4k.webp",
+    src: "assets/iced-teas-new-page2-4k.png",
     alt: "EDEN iced teas page",
     aspect: "two-three"
   },
   Milkshakes: {
-    src: "assets/milkshakes-page-4k.webp",
+    src: "assets/milkshakes-new-page-4k.png",
     alt: "EDEN milkshakes page",
     aspect: "four-three"
   },
   Lemonades: {
-    src: "assets/lemonades-page-4k.webp",
+    src: "assets/lemonades-new-page-4k.png",
     alt: "EDEN lemonades page",
     aspect: "two-three"
   },
   "Soft Drinks": {
-    src: "assets/soft-drinks-page-4k.webp",
+    src: "assets/soft-drinks-new-page-4k.png",
     alt: "EDEN soft drinks page",
     aspect: "four-three"
   },
   Salads: {
-    src: "assets/salads-page-4k.webp",
+    src: "assets/salads-new-page-4k.png",
     alt: "EDEN salads page"
   },
   Sides: {
-    src: "assets/sides-page-4k.webp",
+    src: "assets/sides-new-page-4k.png",
     alt: "EDEN sides page"
   },
   Appetizers: {
-    src: "assets/appetizers-page-4k.webp",
+    src: "assets/appetizers-new-page-4k.png",
     alt: "EDEN appetizers page"
   },
   Burgers: {
-    src: "assets/burgers-page-4k.webp",
+    src: "assets/burgers-new-page-4k.png",
     alt: "EDEN burgers page"
   },
   Shawarma: {
@@ -143,7 +143,7 @@ const menuPages = {
     defaultSection: "Main Course"
   },
   drinks: {
-    src: "assets/drinks-menu-page-clean-4k.webp",
+    src: "assets/iced-teas-new-page-4k.png",
     alt: "EDEN drinks menu page",
     defaultSection: "Coffees"
   },
@@ -153,7 +153,7 @@ const menuPages = {
     defaultSection: "Hookah"
   },
   desserts: {
-    src: "assets/desserts-page-4k.webp",
+    src: "assets/desserts-new-page-4k.png",
     alt: "EDEN desserts page",
     defaultSection: "Desserts",
     aspect: "four-three"
@@ -573,10 +573,6 @@ let transitionTimer = 0;
 const transitionSwapDelay = 86;
 const transitionDuration = 420;
 const imagePreloadCache = new Map();
-let swipeStartX = 0;
-let swipeStartY = 0;
-let swipeTracking = false;
-let lastSwipeBackAt = 0;
 let navigationToken = 0;
 
 function runTransition(type = "page") {
@@ -655,6 +651,13 @@ function warmSectionsForMenu(menu) {
   warmImages([...sectionImages, ...dessertImages]);
 }
 
+function updateMenuSectionLabels(menu) {
+  document.querySelectorAll("[data-open-section]").forEach((button, index) => {
+    const sectionNameForMenu = menuSectionNames[menu]?.[index] || button.dataset.openSection;
+    button.setAttribute("aria-label", `Open ${sectionNameForMenu.toLowerCase()}`);
+  });
+}
+
 function preloadSection(name) {
   warmImages(sectionImageSources(name));
 }
@@ -688,6 +691,7 @@ async function openMenu(category) {
   }
   shell.dataset.menuAspect = menuPages[activeMenu].aspect || "two-three";
   shell.dataset.activeMenu = activeMenu;
+  updateMenuSectionLabels(activeMenu);
   menuScreen.classList.remove("is-preparing");
   runTransition();
   setTimeout(() => {
@@ -847,48 +851,6 @@ async function openItemDetail(groupName, itemId) {
     shell.dataset.screen = "item";
     closeBasketPanel();
   }, transitionSwapDelay);
-}
-
-function goBack() {
-  if (orderReview?.classList.contains("is-open")) {
-    closeOrderReview();
-    return;
-  }
-  if (quickOrder?.classList.contains("is-open")) {
-    closeQuickOrder();
-    return;
-  }
-  const screen = shell.dataset.screen;
-  if (screen === "item") {
-    closeItemDetail();
-  } else if (screen === "section") {
-    closeSection();
-  } else if (screen === "menu") {
-    closeMenu();
-  }
-}
-
-function onSwipeStart(event) {
-  const point = event.touches?.[0] || event;
-  swipeStartX = point.clientX;
-  swipeStartY = point.clientY;
-  const swipeBackZone = Math.min(320, Math.max(96, window.innerWidth * 0.24));
-  swipeTracking = swipeStartX <= swipeBackZone && shell.dataset.screen !== "opening";
-}
-
-function onSwipeEnd(event) {
-  if (!swipeTracking) {
-    return;
-  }
-  const point = event.changedTouches?.[0] || event;
-  const dx = point.clientX - swipeStartX;
-  const dy = Math.abs(point.clientY - swipeStartY);
-  swipeTracking = false;
-  const now = Date.now();
-  if (dx > 72 && dy < 80 && now - lastSwipeBackAt > 450) {
-    lastSwipeBackAt = now;
-    goBack();
-  }
 }
 
 function clearAddButtons() {
@@ -1366,11 +1328,6 @@ document.querySelector("[data-close-quick-order]").addEventListener("click", clo
 document.querySelector("[data-quick-qty-minus]").addEventListener("click", () => changeQuickOrderQty(-1));
 document.querySelector("[data-quick-qty-plus]").addEventListener("click", () => changeQuickOrderQty(1));
 document.querySelector("[data-add-quick-order]").addEventListener("click", addCurrentQuickOrderToBasket);
-
-shell.addEventListener("touchstart", onSwipeStart, { passive: true });
-shell.addEventListener("touchend", onSwipeEnd, { passive: true });
-shell.addEventListener("pointerdown", onSwipeStart);
-shell.addEventListener("pointerup", onSwipeEnd);
 
 document.querySelectorAll("[data-open-section]").forEach((button, index) => {
   const warmTarget = () => {
