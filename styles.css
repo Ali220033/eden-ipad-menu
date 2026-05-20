@@ -1695,7 +1695,8 @@ button {
 }
 
 .item-detail-screen[data-mode="hookah"] .item-hero-img {
-  transform: scale(0.98);
+  transform: scale(1);
+  animation: none;
 }
 
 .item-detail-screen[data-mode="hookah"] .item-hero-vignette {

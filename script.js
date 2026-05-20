@@ -105,15 +105,15 @@ const sectionPages = {
     alt: "EDEN specials coming soon page"
   },
   "Heavy Blend": {
-    src: "assets/heavy-blend-page-4k.webp",
+    src: "assets/heavy-blend-page-4k.webp?v=20260519-hookah-4k",
     alt: "EDEN heavy blend hookah page"
   },
   "Balanced Blend": {
-    src: "assets/balanced-blend-page-4k.webp?v=20260519-balanced-new",
+    src: "assets/balanced-blend-page-4k.webp?v=20260519-hookah-4k",
     alt: "EDEN balanced blend hookah page"
   },
   "Light & Smooth Blend": {
-    src: "assets/light-page-4k.webp",
+    src: "assets/light-page-4k.webp?v=20260519-hookah-4k",
     alt: "EDEN light and smooth blend hookah page"
   },
   "Signature Mix": {
