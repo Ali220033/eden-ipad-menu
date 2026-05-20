@@ -1687,6 +1687,42 @@ button {
   width: min(360px, 100%);
 }
 
+.item-detail-screen[data-mode="hookah"] {
+  background:
+    radial-gradient(circle at 70% 48%, rgba(239, 189, 67, 0.14), transparent 36%),
+    linear-gradient(90deg, rgba(4, 3, 2, 0.98) 0 30%, rgba(4, 3, 2, 0.46) 52%, rgba(4, 3, 2, 0.88) 100%),
+    #040302;
+}
+
+.item-detail-screen[data-mode="hookah"] .item-hero-img {
+  transform: scale(0.98);
+}
+
+.item-detail-screen[data-mode="hookah"] .item-hero-vignette {
+  background:
+    radial-gradient(circle at 58% 52%, transparent 0 26%, rgba(3, 2, 1, 0.24) 45%, rgba(3, 2, 1, 0.88) 100%),
+    linear-gradient(90deg, rgba(3, 2, 1, 0.96) 0 31%, rgba(3, 2, 1, 0.26) 50%, rgba(3, 2, 1, 0.78) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.66), transparent 36%);
+}
+
+.item-detail-screen[data-mode="hookah"] .item-copy {
+  top: 12%;
+}
+
+.item-detail-screen[data-mode="hookah"] .item-description {
+  max-width: 420px;
+}
+
+.item-detail-screen[data-mode="hookah"] .item-price,
+.item-detail-screen[data-mode="hookah"] .item-instructions,
+.item-detail-screen[data-mode="hookah"] .item-actions {
+  display: none !important;
+}
+
+.item-detail-screen[data-mode="hookah"] .ingredient-chip {
+  text-transform: none;
+}
+
 .item-quantity {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

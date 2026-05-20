@@ -20,6 +20,8 @@ const itemPrice = document.querySelector("[data-item-price]");
 const itemOptionsTitle = document.querySelector("[data-item-options-title]");
 const itemAddons = document.querySelector("[data-item-addons]");
 const itemInstructions = document.querySelector("[data-item-instructions]");
+const itemInstructionsGroup = document.querySelector(".item-instructions");
+const itemActions = document.querySelector(".item-actions");
 const itemQty = document.querySelector("[data-item-qty]");
 const itemSelector = document.querySelector("[data-item-selector]");
 const addButtons = document.querySelector("[data-add-buttons]");
@@ -107,7 +109,7 @@ const sectionPages = {
     alt: "EDEN heavy blend hookah page"
   },
   "Balanced Blend": {
-    src: "assets/balanced-blend-page-4k.webp?v=20260519-balanced",
+    src: "assets/balanced-blend-page-4k.webp?v=20260519-balanced-new",
     alt: "EDEN balanced blend hookah page"
   },
   "Light & Smooth Blend": {
@@ -363,6 +365,152 @@ const itemGroups = {
       description: "Beef patty, cheddar, lettuce, tomato, red onion, signature Eden sauce, and fries.",
       ingredients: ["beef patty", "cheddar", "lettuce", "tomato", "red onion", "Eden sauce", "fries"],
       hotspot: { x: 2.2, y: 74.7, w: 95.8, h: 21.8 }
+    }
+  ],
+  "Heavy Blend": [
+    {
+      id: "black-ice-storm",
+      name: "Black Ice Storm",
+      image: "assets/detail-hookah-heavy-black-ice-storm.webp",
+      description: "A chilled dark blend with Supernova's crisp edge and Red Tea's deep body. Cold, serious, and long-lasting with a bold lounge-style finish.",
+      ingredients: ["DarkSide Supernova 40%", "DarkSide Red Tea 60%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 2, y: 38.2, w: 31, h: 31.2 }
+    },
+    {
+      id: "grape-strong",
+      name: "Grape Strong",
+      image: "assets/detail-hookah-heavy-grape-strong.webp",
+      description: "Dark grape intensity with a cool Supernova finish; rich, saturated, and built for guests who like a powerful pull.",
+      ingredients: ["DarkSide Grape Core 70%", "DarkSide Supernova 30%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 34, y: 38.2, w: 32, h: 31.2 }
+    },
+    {
+      id: "cola-ice-heavy",
+      name: "Cola Ice Heavy",
+      image: "assets/detail-hookah-heavy-cola-ice-heavy.webp",
+      description: "Cola sweetness over an icy dark base, giving a bold soda-style profile with a clean frozen finish.",
+      ingredients: ["DarkSide Cola 70%", "DarkSide Supernova 30%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 67, y: 38.2, w: 31, h: 31.2 }
+    },
+    {
+      id: "wild-berry-strong",
+      name: "Wild Berry Strong",
+      image: "assets/detail-hookah-heavy-wild-berry-strong.webp",
+      description: "Wild berry depth with a dark, electric finish; fruity on the nose and heavier through the smoke.",
+      ingredients: ["DarkSide Wild Berry 70%", "DarkSide Supernova 30%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 10, y: 69.8, w: 38, h: 28.2 }
+    },
+    {
+      id: "tropical-cola",
+      name: "Tropical Cola",
+      image: "assets/detail-hookah-heavy-tropical-cola.webp",
+      description: "Tropical brightness meets dark cola body for a bold, unusual mix with sweet lift and a dense finish.",
+      ingredients: ["Must Have Space Flavor 60%", "DarkSide Cola 40%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 52, y: 69.8, w: 38, h: 28.2 }
+    }
+  ],
+  "Balanced Blend": [
+    {
+      id: "blue-berry-mix",
+      name: "Blue Berry Mix",
+      image: "assets/detail-hookah-balanced-blue-berry-mix.webp",
+      description: "A polished berry profile with blueberry sweetness, wild berry depth, and soft mint to keep the smoke fresh.",
+      ingredients: ["Must Have Blueberry 50%", "DarkSide Wild Berry 30%", "Serbetli Soft Mint 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 2, y: 38.2, w: 31, h: 31.2 }
+    },
+    {
+      id: "peach-tea",
+      name: "Peach Tea",
+      image: "assets/detail-hookah-balanced-peach-tea.webp",
+      description: "Juicy peach over red tea warmth with a mint finish; smooth, aromatic, and easy to enjoy.",
+      ingredients: ["Must Have Peach 50%", "DarkSide Red Tea 30%", "Serbetli Soft Mint 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 34, y: 38.2, w: 32, h: 31.2 }
+    },
+    {
+      id: "citrus-balance",
+      name: "Citrus Balance",
+      image: "assets/detail-hookah-balanced-citrus-balance.webp",
+      description: "Lemon-lime and grapefruit give this blend a crisp citrus sparkle while soft mint rounds the finish.",
+      ingredients: ["Must Have Lemon Lime 50%", "Must Have Grapefruit 30%", "Serbetli Soft Mint 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 67, y: 38.2, w: 31, h: 31.2 }
+    },
+    {
+      id: "mango-mix",
+      name: "Mango Mix",
+      image: "assets/detail-hookah-balanced-mango-mix.webp",
+      description: "Mango and pineapple bring tropical sweetness, softened by mint for a balanced and sunny smoke.",
+      ingredients: ["Must Have Mango 50%", "Must Have Pineapple 30%", "Serbetli Soft Mint 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 10, y: 69.8, w: 38, h: 28.2 }
+    },
+    {
+      id: "strong-tea",
+      name: "Strong Tea",
+      image: "assets/detail-hookah-balanced-strong-tea.webp",
+      description: "A tea-forward balanced blend with red tea brightness and DarkSide Core depth for a clean, refined pull.",
+      ingredients: ["DarkSide Red Tea 60%", "DarkSide Core 40%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 52, y: 69.8, w: 38, h: 28.2 }
+    }
+  ],
+  "Light & Smooth Blend": [
+    {
+      id: "watermelon-fresh",
+      name: "Watermelon Fresh",
+      image: "assets/detail-hookah-light-watermelon-fresh.webp",
+      description: "Fresh watermelon with soft mint; juicy, clean, and cooling without feeling heavy.",
+      ingredients: ["Serbetli Watermelon 70%", "Serbetli Soft Mint 30%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 5, y: 39.8, w: 43, h: 30.2 }
+    },
+    {
+      id: "pink-berry",
+      name: "Pink Berry",
+      image: "assets/detail-hookah-light-pink-berry.webp",
+      description: "Strawberry and raspberry sweetness lifted by soft mint; bright, gentle, and easy.",
+      ingredients: ["Serbetli Strawberry 50%", "Serbetli Raspberry 30%", "Serbetli Soft Mint 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 51, y: 39.8, w: 43, h: 30.2 }
+    },
+    {
+      id: "tropical-light",
+      name: "Tropical Light",
+      image: "assets/detail-hookah-light-tropical-light.webp",
+      description: "Pineapple, mango, and coconut in a softer tropical blend with a creamy, refreshing finish.",
+      ingredients: ["Serbetli Pineapple 50%", "Serbetli Mango 30%", "Serbetli Coconut 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 5, y: 70, w: 43, h: 28 }
+    },
+    {
+      id: "citrus-fresh",
+      name: "Citrus Fresh",
+      image: "assets/detail-hookah-light-citrus-fresh.webp",
+      description: "Lemon and lime sharpen the profile while soft mint keeps it smooth and refreshing.",
+      ingredients: ["Serbetli Lemon 50%", "Serbetli Lime 30%", "Serbetli Soft Mint 20%"],
+      optionsTitle: "Blend Ingredients",
+      detailType: "hookah",
+      hotspot: { x: 51, y: 70, w: 43, h: 28 }
     }
   ]
 };
@@ -948,19 +1096,24 @@ function createAddButtons(container, layout, section) {
 
 function renderItemDetail(item) {
   const group = itemGroups[activeItemGroup] || [];
+  const isHookahDetail = item.detailType === "hookah";
   itemImage.src = item.image;
   itemImage.alt = item.name;
-  itemKicker.textContent = `EDEN ${activeItemGroup}`;
+  itemKicker.textContent = isHookahDetail ? `EDEN Hookah - ${activeItemGroup}` : `EDEN ${activeItemGroup}`;
   itemTitle.textContent = item.name;
   itemDescription.textContent = item.description;
-  itemPrice.textContent = item.price;
+  itemPrice.textContent = item.price || "";
+  itemPrice.hidden = isHookahDetail || !item.price;
   itemQty.textContent = detailQty;
   itemInstructions.value = "";
   itemDetailScreen.dataset.group = activeItemGroup.toLowerCase();
+  itemDetailScreen.dataset.mode = isHookahDetail ? "hookah" : "order";
+  itemInstructionsGroup.hidden = isHookahDetail;
+  itemActions.hidden = isHookahDetail;
 
   itemAddons.replaceChildren();
   const ingredients = item.ingredients || [];
-  itemOptionsTitle.textContent = ingredients.length ? "Ingredients" : "No Add Ons";
+  itemOptionsTitle.textContent = item.optionsTitle || (ingredients.length ? "Ingredients" : "No Add Ons");
   itemAddons.closest(".item-options").hidden = !ingredients.length;
   ingredients.forEach((label) => {
     const ingredient = document.createElement("span");
@@ -990,7 +1143,7 @@ function changeDetailQty(delta) {
 function addCurrentDetailToBasket() {
   const group = itemGroups[activeItemGroup] || [];
   const item = group.find((entry) => entry.id === activeItemId);
-  if (!item) {
+  if (!item || item.detailType === "hookah") {
     return;
   }
   const note = itemInstructions.value.trim();
