@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#050403">
     <title>EDEN iPad Menu</title>
-    <link rel="stylesheet" href="styles.css?v=20260518-4k-waiter">
+    <link rel="preload" as="image" href="assets/eden-opening-clean-4k-hq-ipad.webp" fetchpriority="high">
+    <link rel="stylesheet" href="styles.css?v=20260520-smooth2">
   </head>
   <body>
     <main class="ipad-shell" data-screen="opening">
       <section class="opening-screen" aria-label="EDEN opening page">
         <img
           class="opening-art"
-          src="assets/eden-opening-clean-4k-hq.webp"
+          src="assets/eden-opening-clean-4k-hq-ipad.webp"
+          srcset="assets/eden-opening-clean-4k-hq-ipad.webp 2048w, assets/eden-opening-clean-4k-hq.webp 4344w"
+          sizes="100vw"
           alt="EDEN Restaurant and Lounge opening page"
           width="4344"
           height="5792"
@@ -44,7 +47,7 @@
       </section>
 
       <section class="menu-screen" aria-label="EDEN menu">
-        <img class="food-page-art" data-menu-art src="assets/food-menu-page-clean-4k.webp" alt="EDEN food menu page" width="4096" height="6144">
+        <img class="food-page-art" data-menu-art alt="EDEN food menu page" width="4096" height="6144" decoding="async" fetchpriority="high">
         <div class="food-lamp-glows" aria-hidden="true">
           <span style="--x: 4.2%; --y: 55%; --s: 0.9; --d: -0.4s"></span>
           <span style="--x: 22.7%; --y: 36%; --s: 0.62; --d: -1.1s"></span>
@@ -66,7 +69,7 @@
       </section>
 
       <section class="section-screen" aria-label="Food section">
-        <img class="section-page-art" data-section-art src="assets/food-menu-page-4k.webp" alt="EDEN menu detail page">
+        <img class="section-page-art" data-section-art alt="EDEN menu detail page" decoding="async">
         <div class="section-scroll-stack" data-section-scroll-stack aria-hidden="true"></div>
         <div class="section-veiled-bg" aria-hidden="true"></div>
         <button class="back-hit back-hit-section" type="button" data-back-section aria-label="Return to category page"></button>
@@ -80,7 +83,7 @@
       </section>
 
       <section class="item-detail-screen" aria-label="Item detail">
-        <img class="item-hero-img" data-item-image src="assets/detail-salad-eden-4k.webp" alt="">
+        <img class="item-hero-img" data-item-image alt="" decoding="async">
         <div class="item-hero-vignette" aria-hidden="true"></div>
         <button class="item-close-button" type="button" data-close-item aria-label="Close item detail"></button>
         <div class="item-copy">
@@ -111,7 +114,7 @@
       <section class="quick-order-sheet" data-quick-order aria-label="Order item" hidden>
         <button class="quick-order-backdrop" type="button" data-close-quick-order aria-label="Close order panel"></button>
         <div class="quick-order-card" role="dialog" aria-modal="true" aria-labelledby="quick-order-title">
-          <img class="quick-order-image" data-quick-order-image src="assets/eden-opening-clean-4k.webp" alt="">
+          <img class="quick-order-image" data-quick-order-image alt="" decoding="async">
           <div class="quick-order-copy">
             <p data-quick-order-kicker>EDEN Menu</p>
             <h2 id="quick-order-title" data-quick-order-name>Item</h2>
@@ -171,6 +174,6 @@
       <div class="page-veil" aria-hidden="true"></div>
     </main>
 
-    <script src="script.js?v=20260519-balanced"></script>
+    <script src="script.js?v=20260520-smooth2"></script>
   </body>
 </html>

@@ -717,11 +717,36 @@ let width = 1;
 let height = 1;
 let dpr = 1;
 let sparks = [];
+let lastSparkFrame = 0;
 let transitionTimer = 0;
 const transitionSwapDelay = 86;
 const transitionDuration = 420;
 const imagePreloadCache = new Map();
 let navigationToken = 0;
+
+function splitImageQuery(src = "") {
+  const [path, ...queryParts] = src.split("?");
+  return {
+    path,
+    query: queryParts.length ? `?${queryParts.join("?")}` : ""
+  };
+}
+
+function optimizedImageSrc(src = "") {
+  const { path, query } = splitImageQuery(src);
+  if (!path.endsWith(".webp") || path.endsWith("-ipad.webp")) {
+    return src;
+  }
+  return `${path.replace(/\.webp$/, "-ipad.webp")}${query}`;
+}
+
+function responsiveImageSet(src = "") {
+  const optimized = optimizedImageSrc(src);
+  if (optimized === src) {
+    return "";
+  }
+  return `${optimized} 2048w, ${src} 4096w`;
+}
 
 function runTransition(type = "page") {
   clearTimeout(transitionTimer);
@@ -735,42 +760,67 @@ function runTransition(type = "page") {
   }, transitionDuration);
 }
 
-function preloadImage(src) {
+function preloadImage(src, priority = "auto", decode = false) {
   if (!src) {
     return Promise.resolve(false);
   }
 
-  if (imagePreloadCache.has(src)) {
-    return imagePreloadCache.get(src);
+  const imageSrc = optimizedImageSrc(src);
+  if (imagePreloadCache.has(imageSrc)) {
+    return imagePreloadCache.get(imageSrc);
   }
 
   const promise = new Promise((resolve) => {
     const img = new Image();
     img.decoding = "async";
+    img.fetchPriority = priority;
+    const srcset = responsiveImageSet(src);
+    if (srcset) {
+      img.srcset = srcset;
+      img.sizes = "100vw";
+    }
     img.onload = () => {
-      if (img.decode) {
+      if (decode && img.decode) {
         img.decode().then(() => resolve(true)).catch(() => resolve(true));
         return;
       }
       resolve(true);
     };
     img.onerror = () => resolve(false);
-    img.src = src;
+    img.src = imageSrc;
   });
-  imagePreloadCache.set(src, promise);
+  imagePreloadCache.set(imageSrc, promise);
   return promise;
 }
 
-function warmImages(srcs) {
+function warmImages(srcs, priority = "auto") {
   srcs.filter(Boolean).forEach((src) => {
-    preloadImage(src);
+    preloadImage(src, priority);
   });
 }
 
-function setDecodedImage(img, src, alt = "") {
+function setImageSource(img, src, alt = "", priority = "high") {
+  const imageSrc = optimizedImageSrc(src);
+  const srcset = responsiveImageSet(src);
   img.decoding = "async";
-  img.src = src;
+  img.fetchPriority = priority;
+  if (srcset) {
+    img.srcset = srcset;
+    img.sizes = "100vw";
+  } else {
+    img.removeAttribute("srcset");
+    img.removeAttribute("sizes");
+  }
+  if (img.getAttribute("src") !== imageSrc) {
+    img.src = imageSrc;
+  }
   img.alt = alt;
+  preloadImage(src, priority);
+}
+
+function setDecodedImage(img, src, alt = "") {
+  setImageSource(img, src, alt);
+  preloadImage(src, "high", true);
   if (img.decode) {
     return img.decode().catch(() => true);
   }
@@ -785,7 +835,7 @@ function setDecodedImage(img, src, alt = "") {
 
 function warmMenuImages() {
   const menuImages = Object.values(menuPages).map((page) => page.src);
-  warmImages(menuImages);
+  warmImages(menuImages, "high");
 }
 
 function sectionImageSources(name) {
@@ -796,7 +846,7 @@ function sectionImageSources(name) {
 function warmSectionsForMenu(menu) {
   const sectionImages = (menuSectionNames[menu] || []).flatMap(sectionImageSources);
   const dessertImages = menu === "desserts" ? (addButtonLayouts.Desserts || []).map((item) => item.image) : [];
-  warmImages([...sectionImages, ...dessertImages]);
+  warmImages([...sectionImages, ...dessertImages], "high");
 }
 
 function updateMenuSectionLabels(menu) {
@@ -807,7 +857,7 @@ function updateMenuSectionLabels(menu) {
 }
 
 function preloadSection(name) {
-  warmImages(sectionImageSources(name));
+  warmImages(sectionImageSources(name), "high");
 }
 
 function warmDetailImages() {
@@ -815,7 +865,39 @@ function warmDetailImages() {
   const orderImages = Object.values(addButtonLayouts)
     .flatMap((layout) => layout.map((item) => item.image))
     .filter(Boolean);
-  warmImages([...detailImages, ...orderImages]);
+  warmImages([...detailImages, ...orderImages], "low");
+}
+
+function warmSourcesInBatches(sources, options = {}) {
+  const { batchSize = 4, delay = 260, priority = "low" } = options;
+  const uniqueSources = Array.from(new Set(sources.filter(Boolean)));
+  let index = 0;
+
+  const warmNextBatch = () => {
+    const batch = uniqueSources.slice(index, index + batchSize);
+    warmImages(batch, priority);
+    index += batch.length;
+    if (index < uniqueSources.length) {
+      setTimeout(warmNextBatch, delay);
+    }
+  };
+
+  warmNextBatch();
+}
+
+function warmAllMenuImages() {
+  const sectionImages = Object.keys(sectionPages).flatMap(sectionImageSources);
+  const menuImages = Object.values(menuPages).map((page) => page.src);
+  warmSourcesInBatches(menuImages, { batchSize: 2, delay: 420, priority: "auto" });
+  setTimeout(() => warmSourcesInBatches(sectionImages, { batchSize: 2, delay: 520, priority: "low" }), 3000);
+}
+
+function warmInteractiveImagesInBatches() {
+  const sources = [
+    ...Object.values(itemGroups).flatMap((group) => group.map((item) => item.image)),
+    ...Object.values(addButtonLayouts).flatMap((layout) => layout.map((item) => item.image).filter(Boolean))
+  ].filter(Boolean);
+  warmSourcesInBatches(sources, { batchSize: 4, delay: 300, priority: "low" });
 }
 
 async function openMenu(category) {
@@ -829,11 +911,8 @@ async function openMenu(category) {
 
   activeMenu = menuPages[category] ? category : "food";
   menuScreen.classList.add("is-preparing");
-  await preloadImage(menuPages[activeMenu].src);
-  if (token !== navigationToken) {
-    return;
-  }
-  await setDecodedImage(menuArt, menuPages[activeMenu].src, menuPages[activeMenu].alt);
+  warmImages([menuPages[activeMenu].src], "high");
+  setImageSource(menuArt, menuPages[activeMenu].src, menuPages[activeMenu].alt);
   if (token !== navigationToken) {
     return;
   }
@@ -842,12 +921,12 @@ async function openMenu(category) {
   updateMenuSectionLabels(activeMenu);
   menuScreen.classList.remove("is-preparing");
   runTransition();
+  warmSectionsForMenu(activeMenu);
   setTimeout(() => {
     if (token !== navigationToken) {
       return;
     }
     shell.dataset.screen = "menu";
-    warmSectionsForMenu(activeMenu);
     renderMenuAddButtons(activeMenu === "desserts" ? "Desserts" : "");
     closeQuickOrder();
     closeOrderReview();
@@ -871,8 +950,6 @@ async function openSection(name) {
   sectionScreen.classList.add("is-preparing");
   clearAddButtons();
   clearItemHotspots();
-  sectionArt.removeAttribute("src");
-  sectionArt.alt = "";
   sectionScrollStack.replaceChildren();
   sectionScrollStack.setAttribute("aria-hidden", "true");
   activeSection = name || menuPages[activeMenu].defaultSection;
@@ -882,7 +959,7 @@ async function openSection(name) {
   sectionDescription.textContent = comingSoon?.description || "Item page ready for dishes, descriptions, prices, photos, and add-to-order controls.";
   const page = sectionPages[name];
   const pageImages = page ? page.pages || [page.src] : [menuPages[activeMenu].src];
-  await Promise.all(pageImages.map((src) => preloadImage(src)));
+  warmImages(pageImages, "high");
   if (token !== navigationToken) {
     return;
   }
@@ -890,30 +967,26 @@ async function openSection(name) {
   sectionScreen.classList.toggle("needs-back-overlay", Boolean(page?.needsBackOverlay || overlayBackSections.has(name)));
   sectionScreen.classList.remove("has-scroll");
   if (page) {
-    warmImages(pageImages);
     if (page.pages?.length) {
       sectionScreen.classList.add("has-scroll");
       sectionScrollStack.setAttribute("aria-hidden", "false");
       const scrollImages = page.pages.map((src, index) => {
         const img = document.createElement("img");
         img.className = "section-scroll-art";
+        setImageSource(img, src, index === 0 ? page.alt : `${page.alt} page ${index + 1}`);
         return { img, src, alt: index === 0 ? page.alt : `${page.alt} page ${index + 1}` };
       });
-      await Promise.all(scrollImages.map(({ img, src, alt }) => setDecodedImage(img, src, alt)));
-      if (token !== navigationToken) {
-        return;
-      }
       scrollImages.forEach(({ img }) => sectionScrollStack.appendChild(img));
       sectionScrollStack.scrollTop = 0;
     }
-    await setDecodedImage(sectionArt, page.src, page.alt);
+    setImageSource(sectionArt, page.src, page.alt);
     if (token !== navigationToken) {
       return;
     }
     shell.dataset.sectionAspect = page.aspect || "two-three";
     sectionScreen.classList.add("has-image");
   } else {
-    await setDecodedImage(sectionArt, menuPages[activeMenu].src, "");
+    setImageSource(sectionArt, menuPages[activeMenu].src, "");
     if (token !== navigationToken) {
       return;
     }
@@ -986,7 +1059,7 @@ async function openItemDetail(groupName, itemId) {
   activeItemGroup = groupName;
   activeItemId = item.id;
   detailQty = 1;
-  await preloadImage(item.image);
+  preloadImage(item.image, "high");
   if (token !== navigationToken) {
     return;
   }
@@ -1016,6 +1089,7 @@ function renderItemHotspots(section) {
   const group = itemGroups[section] || [];
   if (group.length) {
     sectionScreen.classList.add("has-item-hotspots");
+    warmImages(group.map((item) => item.image), "high");
     group.forEach((item) => {
       const button = document.createElement("button");
       button.type = "button";
@@ -1025,6 +1099,8 @@ function renderItemHotspots(section) {
       button.style.width = `${item.hotspot.w}%`;
       button.style.height = `${item.hotspot.h}%`;
       button.setAttribute("aria-label", `Open ${item.name}`);
+      button.addEventListener("pointerenter", () => preloadImage(item.image, "high"));
+      button.addEventListener("touchstart", () => preloadImage(item.image, "high"), { passive: true });
       button.addEventListener("click", () => openItemDetail(section, item.id));
       itemHotspots.appendChild(button);
     });
@@ -1097,8 +1173,7 @@ function createAddButtons(container, layout, section) {
 function renderItemDetail(item) {
   const group = itemGroups[activeItemGroup] || [];
   const isHookahDetail = item.detailType === "hookah";
-  itemImage.src = item.image;
-  itemImage.alt = item.name;
+  setImageSource(itemImage, item.image, item.name);
   itemKicker.textContent = isHookahDetail ? `EDEN Hookah - ${activeItemGroup}` : `EDEN ${activeItemGroup}`;
   itemTitle.textContent = item.name;
   itemDescription.textContent = item.description;
@@ -1129,7 +1204,9 @@ function renderItemDetail(item) {
     button.className = "selector-card";
     button.classList.toggle("is-active", entry.id === item.id);
     button.setAttribute("aria-label", `View ${entry.name}`);
-    button.innerHTML = `<img src="${entry.image}" alt=""><span>${entry.name}</span>`;
+    button.innerHTML = `<img src="${optimizedImageSrc(entry.image)}" alt="" loading="lazy" decoding="async"><span>${entry.name}</span>`;
+    button.addEventListener("pointerenter", () => preloadImage(entry.image, "high"));
+    button.addEventListener("touchstart", () => preloadImage(entry.image, "high"), { passive: true });
     button.addEventListener("click", () => openItemDetail(activeItemGroup, entry.id));
     itemSelector.appendChild(button);
   });
@@ -1160,8 +1237,7 @@ function openQuickOrder(section, item) {
   const image = resolveBasketImage(item.name, item.image);
   activeQuickOrder = { section, ...item, image };
   activeQuickOrderQty = 1;
-  quickOrderImage.src = image;
-  quickOrderImage.alt = item.name;
+  setImageSource(quickOrderImage, image, item.name);
   quickOrderKicker.textContent = `EDEN ${section}`;
   quickOrderName.textContent = item.name;
   quickOrderInstructions.value = "";
@@ -1294,7 +1370,7 @@ function renderBasket() {
     const remove = document.createElement("button");
     const { title, note } = splitOrderName(name);
     thumb.className = "basket-item-thumb";
-    thumb.src = line.image || "assets/eden-opening-clean-4k.webp";
+    thumb.src = optimizedImageSrc(line.image || "assets/eden-opening-clean-4k.webp");
     thumb.alt = "";
     copy.className = "basket-item-copy";
     label.textContent = title;
@@ -1348,7 +1424,7 @@ function renderOrderReview() {
     const remove = document.createElement("button");
     const parts = splitOrderName(name);
 
-    thumb.src = line.image || "assets/eden-opening-clean-4k.webp";
+    thumb.src = optimizedImageSrc(line.image || "assets/eden-opening-clean-4k.webp");
     thumb.alt = "";
     title.textContent = parts.title;
     note.textContent = parts.note || "No special instructions";
@@ -1418,7 +1494,7 @@ function resizeCanvas() {
 }
 
 function createSparks() {
-  const count = Math.round(Math.min(190, Math.max(90, width / 5.8)));
+  const count = Math.round(Math.min(92, Math.max(42, width / 11)));
   sparks = Array.from({ length: count }, () => ({
     x: Math.random() * width,
     y: Math.random() * height * 0.82,
@@ -1431,6 +1507,18 @@ function createSparks() {
 }
 
 function drawSparks(time) {
+  if (time - lastSparkFrame < 50) {
+    setTimeout(() => requestAnimationFrame(drawSparks), 80);
+    return;
+  }
+  lastSparkFrame = time;
+
+  if (shell.dataset.screen !== "opening") {
+    ctx.clearRect(0, 0, width, height);
+    setTimeout(() => requestAnimationFrame(drawSparks), 180);
+    return;
+  }
+
   ctx.clearRect(0, 0, width, height);
 
   for (const spark of sparks) {
@@ -1454,15 +1542,19 @@ function drawSparks(time) {
     ctx.fill();
   }
 
-  requestAnimationFrame(drawSparks);
+  setTimeout(() => requestAnimationFrame(drawSparks), 80);
 }
 
 document.querySelectorAll("[data-open-menu]").forEach((button) => {
   button.addEventListener("click", () => openMenu(button.dataset.category));
   button.addEventListener("pointerenter", () => {
     const category = menuPages[button.dataset.category] ? button.dataset.category : "food";
-    warmImages([menuPages[category]?.src]);
+    warmImages([menuPages[category]?.src], "high");
   });
+  button.addEventListener("touchstart", () => {
+    const category = menuPages[button.dataset.category] ? button.dataset.category : "food";
+    warmImages([menuPages[category]?.src], "high");
+  }, { passive: true });
 });
 
 basketButton.addEventListener("click", toggleBasketPanel);
@@ -1499,7 +1591,12 @@ resizeCanvas();
 requestAnimationFrame(drawSparks);
 
 const warmWhenIdle = window.requestIdleCallback || ((callback) => setTimeout(callback, 350));
-warmWhenIdle(warmMenuImages);
+warmWhenIdle(() => {
+  setTimeout(() => {
+    warmAllMenuImages();
+    setTimeout(warmInteractiveImagesInBatches, 6500);
+  }, 5000);
+});
 
 window.addEventListener("resize", resizeCanvas, { passive: true });
 window.addEventListener("orientationchange", resizeCanvas, { passive: true });
