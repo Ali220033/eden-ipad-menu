@@ -81,7 +81,7 @@ const sectionPages = {
     aspect: "four-three"
   },
   Salads: {
-    src: "assets/salads-new-page-4k.webp?v=20260525-salad",
+    src: "assets/salads-new-page-4k.webp",
     alt: "EDEN salads page"
   },
   Sides: {
@@ -205,11 +205,11 @@ const itemGroups = {
   Salads: [
     {
       id: "eden-salad",
-      name: "Mediterranean Shrimp Avocado Salad",
+      name: "Eden Salad",
       price: "$19.00",
       image: "assets/detail-salad-eden-4k.webp",
-      description: "Mediterranean shrimp salad with avocado, greens, cherry tomatoes, olives, feta, herbs, and Eden balsamic glaze.",
-      ingredients: ["shrimp", "avocado", "mixed greens", "cherry tomatoes", "olives", "feta", "herbs", "balsamic glaze"],
+      description: "Shrimp, greens, feta, almonds, cherry tomatoes, herbs, and Eden balsamic glaze.",
+      ingredients: ["shrimp", "mixed greens", "feta", "almonds", "cherry tomatoes", "herbs", "balsamic glaze"],
       hotspot: { x: 2.2, y: 25.2, w: 46.5, h: 27.4 }
     },
     {
