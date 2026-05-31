@@ -1303,6 +1303,31 @@ function splitOrderName(name) {
   };
 }
 
+function serializeOrderItems() {
+  return Array.from(basketLines.entries()).map(([name, line]) => {
+    const { title, note } = splitOrderName(name);
+    return {
+      name: title,
+      note,
+      quantity: line.count,
+      image: resolveBasketImage(title, line.image || ""),
+      ordered_at: new Date().toISOString()
+    };
+  });
+}
+
+function summarizeOrderItems(items) {
+  return items
+    .map((item) => `${item.quantity}x ${item.name}${item.note ? ` (${item.note})` : ""}`)
+    .join(", ")
+    .slice(0, 500);
+}
+
+function getLegacyOrderPageUrl(orderItems) {
+  const encodedOrder = encodeURIComponent(JSON.stringify(orderItems));
+  return `${window.location.href.split("#")[0]}#eden_order=${encodedOrder}`;
+}
+
 function removeBasketLine(name) {
   basketLines.delete(name);
   renderBasket();
@@ -1500,9 +1525,11 @@ async function callWaiter() {
   }
 
   const tableNumber = getCurrentTableNumber();
+  const orderItems = serializeOrderItems();
+  const orderTotal = orderItems.reduce((sum, item) => sum + item.quantity, 0);
   const cooldownKey = getWaiterCooldownKey(tableNumber);
   const lastCallTime = Number(window.localStorage.getItem(cooldownKey) || 0);
-  const isCoolingDown = Date.now() - lastCallTime < waiterCooldownMs;
+  const isCoolingDown = orderTotal === 0 && Date.now() - lastCallTime < waiterCooldownMs;
 
   callWaiterButton.disabled = true;
   callWaiterLabel.textContent = isCoolingDown ? "Already Called" : "Calling...";
@@ -1523,14 +1550,28 @@ async function callWaiter() {
   const payload = {
     table_number: tableNumber,
     status: "new",
+    order_items: orderItems,
+    order_total: orderTotal,
+    order_summary: summarizeOrderItems(orderItems),
     page_url: window.location.href,
     user_agent: window.navigator.userAgent.slice(0, 250)
   };
 
-  const { error } = await waiterClient.from(waiterTable).insert(payload);
+  let { error } = await waiterClient.from(waiterTable).insert(payload);
+  if (error && /order_|schema|column/i.test(error.message || "")) {
+    const legacyPayload = {
+      table_number: tableNumber,
+      status: "new",
+      page_url: getLegacyOrderPageUrl(orderItems),
+      user_agent: window.navigator.userAgent.slice(0, 250)
+    };
+    const legacyResult = await waiterClient.from(waiterTable).insert(legacyPayload);
+    error = legacyResult.error;
+  }
+
   if (error) {
     console.error("Could not send waiter call", error);
-    callWaiterLabel.textContent = "Try Again";
+    callWaiterLabel.textContent = /order_|schema|column/i.test(error.message || "") ? "Setup Needed" : "Try Again";
     callWaiterButton.disabled = false;
     return;
   }
