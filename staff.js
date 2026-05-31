@@ -33,15 +33,17 @@ let selectedTableKey = null;
 let usesLegacyOrderPayload = false;
 let audioPrimed = false;
 
-const BEETHOVEN_ALERT_PHRASE = [
-  [329.63, 0.42], [329.63, 0.42], [349.23, 0.42], [392, 0.42],
-  [392, 0.42], [349.23, 0.42], [329.63, 0.42], [293.66, 0.42],
-  [261.63, 0.42], [261.63, 0.42], [293.66, 0.42], [329.63, 0.42],
-  [329.63, 0.62], [293.66, 0.2], [293.66, 0.72], [0, 0.26],
-  [329.63, 0.42], [329.63, 0.42], [349.23, 0.42], [392, 0.42],
-  [392, 0.42], [349.23, 0.42], [329.63, 0.42], [293.66, 0.42],
-  [261.63, 0.42], [261.63, 0.42], [293.66, 0.42], [329.63, 0.42],
-  [293.66, 0.62], [261.63, 0.2], [261.63, 0.86], [0, 0.36]
+const FLOWING_ALERT_PHRASE = [
+  [493.88, 0.34], [659.25, 0.34], [739.99, 0.34], [987.77, 0.56],
+  [880, 0.34], [739.99, 0.34], [659.25, 0.34], [554.37, 0.56],
+  [440, 0.34], [554.37, 0.34], [659.25, 0.34], [830.61, 0.56],
+  [739.99, 0.34], [659.25, 0.34], [554.37, 0.34], [493.88, 0.7],
+  [0, 0.16],
+  [523.25, 0.34], [659.25, 0.34], [783.99, 0.34], [1046.5, 0.56],
+  [987.77, 0.34], [783.99, 0.34], [659.25, 0.34], [587.33, 0.56],
+  [493.88, 0.34], [587.33, 0.34], [698.46, 0.34], [880, 0.56],
+  [783.99, 0.34], [698.46, 0.34], [587.33, 0.34], [523.25, 0.74],
+  [0, 0.22]
 ];
 
 function tableKey(call) {
@@ -122,32 +124,50 @@ function stopAlertMelody() {
   }
 }
 
-function scheduleTone(frequency, start, duration, output) {
+function scheduleTone(frequency, start, duration, output, index = 0) {
   if (!frequency) {
     return;
   }
 
   const oscillator = audioContext.createOscillator();
   const harmony = audioContext.createOscillator();
+  const bass = audioContext.createOscillator();
   const gain = audioContext.createGain();
+  const harmonyGain = audioContext.createGain();
+  const bassGain = audioContext.createGain();
   const end = start + duration;
 
   oscillator.type = "sine";
-  harmony.type = "triangle";
+  harmony.type = "sine";
+  bass.type = "triangle";
   oscillator.frequency.setValueAtTime(frequency, start);
-  harmony.frequency.setValueAtTime(frequency * 2, start);
+  harmony.frequency.setValueAtTime(frequency * 1.5, start);
+  bass.frequency.setValueAtTime(frequency / 2, start);
   gain.gain.setValueAtTime(0.0001, start);
-  gain.gain.exponentialRampToValueAtTime(0.2, start + 0.035);
-  gain.gain.setValueAtTime(0.2, Math.max(start + 0.04, end - 0.12));
+  harmonyGain.gain.setValueAtTime(0.0001, start);
+  bassGain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(0.16, start + 0.055);
+  harmonyGain.gain.exponentialRampToValueAtTime(0.035, start + 0.08);
+  bassGain.gain.exponentialRampToValueAtTime(index % 4 === 0 ? 0.055 : 0.0001, start + 0.09);
+  gain.gain.setValueAtTime(0.16, Math.max(start + 0.08, end - 0.15));
+  harmonyGain.gain.setValueAtTime(0.035, Math.max(start + 0.08, end - 0.16));
+  bassGain.gain.setValueAtTime(index % 4 === 0 ? 0.055 : 0.0001, Math.max(start + 0.1, end - 0.2));
   gain.gain.exponentialRampToValueAtTime(0.0001, end);
+  harmonyGain.gain.exponentialRampToValueAtTime(0.0001, end);
+  bassGain.gain.exponentialRampToValueAtTime(0.0001, end);
 
   oscillator.connect(gain);
-  harmony.connect(gain);
+  harmony.connect(harmonyGain);
+  bass.connect(bassGain);
   gain.connect(output);
+  harmonyGain.connect(output);
+  bassGain.connect(output);
   oscillator.start(start);
   harmony.start(start);
+  bass.start(start);
   oscillator.stop(end + 0.05);
   harmony.stop(end + 0.05);
+  bass.stop(end + 0.05);
 }
 
 function playAlertMelody() {
@@ -167,9 +187,9 @@ function playAlertMelody() {
   const endTime = now + 60;
 
   while (cursor < endTime) {
-    BEETHOVEN_ALERT_PHRASE.forEach(([frequency, duration]) => {
+    FLOWING_ALERT_PHRASE.forEach(([frequency, duration], index) => {
       if (cursor < endTime) {
-        scheduleTone(frequency, cursor, Math.min(duration, endTime - cursor), alertGain);
+        scheduleTone(frequency, cursor, Math.min(duration, endTime - cursor), alertGain, index);
       }
       cursor += duration;
     });
