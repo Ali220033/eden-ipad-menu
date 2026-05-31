@@ -51,6 +51,29 @@ const waiterClient = window.supabase && supabaseConfig.url && supabaseConfig.key
 const waiterTable = supabaseConfig.waiterTable || "waiter_calls";
 const waiterCooldownMs = 45000;
 
+function lockPageZoom() {
+  const stopZoom = (event) => event.preventDefault();
+  let lastTouchEnd = 0;
+
+  document.addEventListener("gesturestart", stopZoom, { passive: false });
+  document.addEventListener("gesturechange", stopZoom, { passive: false });
+  document.addEventListener("gestureend", stopZoom, { passive: false });
+  document.addEventListener("touchmove", (event) => {
+    if (event.touches && event.touches.length > 1) {
+      event.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener("touchend", (event) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 320) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+}
+
+lockPageZoom();
+
 const sectionPages = {
   "Main Course": {
     src: "assets/main-course-new-page-4k.webp",
@@ -103,11 +126,11 @@ const sectionPages = {
     alt: "EDEN burgers page"
   },
   Shawarma: {
-    src: "assets/shawarma-coming-soon-4k.webp",
+    src: "assets/shawarma-coming-soon-4k.webp?v=20260531-mobile4",
     alt: "EDEN shawarma coming soon page"
   },
   Specials: {
-    src: "assets/specials-coming-soon-4k.webp",
+    src: "assets/specials-coming-soon-4k.webp?v=20260531-mobile4",
     alt: "EDEN specials coming soon page"
   },
   "Heavy Blend": {
