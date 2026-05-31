@@ -31,6 +31,7 @@ let alertMelodyToken = 0;
 let realtimeChannel = null;
 let selectedTableKey = null;
 let usesLegacyOrderPayload = false;
+let audioPrimed = false;
 
 const BEETHOVEN_ALERT_PHRASE = [
   [329.63, 0.42], [329.63, 0.42], [349.23, 0.42], [392, 0.42],
@@ -64,12 +65,44 @@ function setStatus(text, live = false) {
   statusBadge.classList.toggle("is-live", live);
 }
 
-function unlockAudio() {
+function primeAudioOutput() {
+  if (!audioContext || audioPrimed) {
+    return;
+  }
+
+  const now = audioContext.currentTime;
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(523.25, now);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.012, now + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+  oscillator.connect(gain).connect(audioContext.destination);
+  oscillator.start(now);
+  oscillator.stop(now + 0.09);
+  audioPrimed = true;
+}
+
+function unlockAudio(shouldPrime = false) {
   if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+    try {
+      audioContext = new AudioContextConstructor({ latencyHint: "interactive" });
+    } catch {
+      audioContext = new AudioContextConstructor();
+    }
   }
   if (audioContext.state === "suspended") {
-    audioContext.resume();
+    audioContext.resume().then(() => {
+      if (shouldPrime) {
+        primeAudioOutput();
+      }
+    }).catch(() => {
+      setStatus("Tap Test Sound");
+    });
+  } else if (shouldPrime) {
+    primeAudioOutput();
   }
 }
 
@@ -104,8 +137,8 @@ function scheduleTone(frequency, start, duration, output) {
   oscillator.frequency.setValueAtTime(frequency, start);
   harmony.frequency.setValueAtTime(frequency * 2, start);
   gain.gain.setValueAtTime(0.0001, start);
-  gain.gain.exponentialRampToValueAtTime(0.105, start + 0.035);
-  gain.gain.setValueAtTime(0.105, Math.max(start + 0.04, end - 0.12));
+  gain.gain.exponentialRampToValueAtTime(0.2, start + 0.035);
+  gain.gain.setValueAtTime(0.2, Math.max(start + 0.04, end - 0.12));
   gain.gain.exponentialRampToValueAtTime(0.0001, end);
 
   oscillator.connect(gain);
@@ -126,7 +159,7 @@ function playAlertMelody() {
   stopAlertMelody();
   const melodyToken = alertMelodyToken;
   alertGain = audioContext.createGain();
-  alertGain.gain.setValueAtTime(0.34, audioContext.currentTime);
+  alertGain.gain.setValueAtTime(0.82, audioContext.currentTime);
   alertGain.connect(audioContext.destination);
 
   const now = audioContext.currentTime;
@@ -547,7 +580,7 @@ async function openBoard() {
     return;
   }
 
-  unlockAudio();
+  unlockAudio(true);
   pinError.hidden = true;
   login.hidden = true;
   board.hidden = false;
