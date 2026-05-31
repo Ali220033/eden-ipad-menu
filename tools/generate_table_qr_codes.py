@@ -14,9 +14,12 @@ OUTPUT = ROOT / "qr-codes"
 BASE_URL = "https://eden-ipad-menu.vercel.app/"
 TABLE_COUNT = 8
 
-CARD_W = 1800
-CARD_H = 2400
-QR_SIZE = 1100
+BASE_W = 1800
+BASE_H = 2400
+CARD_W = 3000
+CARD_H = 4000
+SCALE = CARD_W / BASE_W
+QR_SIZE = int(1100 * SCALE)
 
 BLACK = (4, 3, 2)
 DEEP = (11, 8, 4)
@@ -24,6 +27,10 @@ GOLD = (220, 168, 55)
 GOLD_BRIGHT = (255, 229, 150)
 GOLD_SOFT = (177, 121, 32)
 IVORY = (255, 244, 206)
+
+
+def unit(value: float) -> int:
+    return round(value * SCALE)
 
 
 def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
@@ -34,7 +41,7 @@ def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
     ]
     for candidate in candidates:
         if Path(candidate).exists():
-            return ImageFont.truetype(candidate, size)
+            return ImageFont.truetype(candidate, unit(size))
     return ImageFont.load_default()
 
 
@@ -98,14 +105,14 @@ def draw_gradient_background() -> Image.Image:
 
 
 def draw_border(draw: ImageDraw.ImageDraw) -> None:
-    draw.rounded_rectangle((76, 76, CARD_W - 76, CARD_H - 76), radius=34, outline=GOLD_SOFT, width=4)
-    draw.rounded_rectangle((112, 112, CARD_W - 112, CARD_H - 112), radius=24, outline=(88, 58, 16), width=2)
-    draw.line((360, 388, CARD_W - 360, 388), fill=(131, 88, 22), width=2)
-    draw.line((360, 1982, CARD_W - 360, 1982), fill=(131, 88, 22), width=2)
+    draw.rounded_rectangle((unit(76), unit(76), CARD_W - unit(76), CARD_H - unit(76)), radius=unit(34), outline=GOLD_SOFT, width=unit(4))
+    draw.rounded_rectangle((unit(112), unit(112), CARD_W - unit(112), CARD_H - unit(112)), radius=unit(24), outline=(88, 58, 16), width=unit(2))
+    draw.line((unit(360), unit(408), CARD_W - unit(360), unit(408)), fill=(131, 88, 22), width=unit(2))
+    draw.line((unit(360), unit(1982), CARD_W - unit(360), unit(1982)), fill=(131, 88, 22), width=unit(2))
     for sx in (1, -1):
-        x = 150 if sx == 1 else CARD_W - 150
-        draw.arc((x - 42, 150, x + 42, 234), 190 if sx == 1 else -10, 350 if sx == 1 else 170, fill=GOLD, width=3)
-        draw.arc((x - 42, CARD_H - 234, x + 42, CARD_H - 150), 10 if sx == 1 else 190, 170 if sx == 1 else 350, fill=GOLD, width=3)
+        x = unit(150) if sx == 1 else CARD_W - unit(150)
+        draw.arc((x - unit(42), unit(150), x + unit(42), unit(234)), 190 if sx == 1 else -10, 350 if sx == 1 else 170, fill=GOLD, width=unit(3))
+        draw.arc((x - unit(42), CARD_H - unit(234), x + unit(42), CARD_H - unit(150)), 10 if sx == 1 else 190, 170 if sx == 1 else 350, fill=GOLD, width=unit(3))
 
 
 def create_card(table: int) -> Image.Image:
@@ -114,26 +121,26 @@ def create_card(table: int) -> Image.Image:
     draw = ImageDraw.Draw(card)
     draw_border(draw)
 
-    y = 184
-    y = center_text(draw, y, "EDEN", FONT_BRAND, GOLD_BRIGHT, spacing=12) + 24
-    y = center_text(draw, y, "RESTAURANT & LOUNGE", FONT_SMALL, GOLD, spacing=8) + 82
-    y = center_text(draw, y, f"TABLE {table}", FONT_TABLE, IVORY, spacing=8) + 46
-    center_text(draw, y, "SCAN TO VIEW MENU", FONT_LABEL, GOLD_BRIGHT, spacing=4)
+    y = unit(172)
+    y = center_text(draw, y, "EDEN", FONT_BRAND, GOLD_BRIGHT, spacing=unit(12)) + unit(42)
+    y = center_text(draw, y, "RESTAURANT & LOUNGE", FONT_SMALL, GOLD, spacing=unit(8)) + unit(96)
+    y = center_text(draw, y, f"TABLE {table}", FONT_TABLE, IVORY, spacing=unit(8)) + unit(46)
+    center_text(draw, y, "SCAN TO VIEW MENU", FONT_LABEL, GOLD_BRIGHT, spacing=unit(4))
 
     qr = make_qr(url)
     qr_x = (CARD_W - QR_SIZE) // 2
-    qr_y = 796
-    shadow = Image.new("RGBA", (QR_SIZE + 90, QR_SIZE + 90), (0, 0, 0, 0))
+    qr_y = unit(796)
+    shadow = Image.new("RGBA", (QR_SIZE + unit(90), QR_SIZE + unit(90)), (0, 0, 0, 0))
     shadow_draw = ImageDraw.Draw(shadow)
-    shadow_draw.rounded_rectangle((20, 20, QR_SIZE + 70, QR_SIZE + 70), radius=46, fill=(0, 0, 0, 170))
-    card.paste(shadow.convert("RGB"), (qr_x - 45, qr_y - 35), shadow)
-    draw.rounded_rectangle((qr_x - 32, qr_y - 32, qr_x + QR_SIZE + 32, qr_y + QR_SIZE + 32), radius=34, fill=IVORY, outline=GOLD_BRIGHT, width=7)
+    shadow_draw.rounded_rectangle((unit(20), unit(20), QR_SIZE + unit(70), QR_SIZE + unit(70)), radius=unit(46), fill=(0, 0, 0, 170))
+    card.paste(shadow.convert("RGB"), (qr_x - unit(45), qr_y - unit(35)), shadow)
+    draw.rounded_rectangle((qr_x - unit(32), qr_y - unit(32), qr_x + QR_SIZE + unit(32), qr_y + QR_SIZE + unit(32)), radius=unit(34), fill=IVORY, outline=GOLD_BRIGHT, width=unit(7))
     card.paste(qr, (qr_x, qr_y))
 
-    y = 2010
-    center_text(draw, y, "ENJOY YOUR EDEN EXPERIENCE", FONT_HINT, GOLD_BRIGHT, spacing=3)
-    y += 92
-    center_text(draw, y, "FRESHLY PREPARED FOR YOUR TABLE", FONT_SMALL, GOLD, spacing=4)
+    y = unit(2010)
+    center_text(draw, y, "ENJOY YOUR EDEN EXPERIENCE", FONT_HINT, GOLD_BRIGHT, spacing=unit(3))
+    y += unit(92)
+    center_text(draw, y, "FRESHLY PREPARED FOR YOUR TABLE", FONT_SMALL, GOLD, spacing=unit(4))
     return card
 
 
@@ -167,12 +174,15 @@ def make_contact_sheet(cards: list[Image.Image]) -> None:
 
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    individual_output = OUTPUT / "individual-4k"
+    individual_output.mkdir(parents=True, exist_ok=True)
     cards = []
     links = []
     for table in range(1, TABLE_COUNT + 1):
         card = create_card(table)
         cards.append(card)
         card.save(OUTPUT / f"eden-table-{table:02d}-qr.png", quality=95)
+        card.save(individual_output / f"eden-table-{table:02d}-qr-4k.png", quality=100)
         links.append(f"Table {table}: {BASE_URL}?table={table}")
 
     make_print_sheet(cards)
