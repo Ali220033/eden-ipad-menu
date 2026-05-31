@@ -1,0 +1,8 @@
+Table 1: https://eden-ipad-menu.vercel.app/?table=1
+Table 2: https://eden-ipad-menu.vercel.app/?table=2
+Table 3: https://eden-ipad-menu.vercel.app/?table=3
+Table 4: https://eden-ipad-menu.vercel.app/?table=4
+Table 5: https://eden-ipad-menu.vercel.app/?table=5
+Table 6: https://eden-ipad-menu.vercel.app/?table=6
+Table 7: https://eden-ipad-menu.vercel.app/?table=7
+Table 8: https://eden-ipad-menu.vercel.app/?table=8
