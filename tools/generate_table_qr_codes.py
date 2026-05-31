@@ -130,13 +130,10 @@ def create_card(table: int) -> Image.Image:
     draw.rounded_rectangle((qr_x - 32, qr_y - 32, qr_x + QR_SIZE + 32, qr_y + QR_SIZE + 32), radius=34, fill=IVORY, outline=GOLD_BRIGHT, width=7)
     card.paste(qr, (qr_x, qr_y))
 
-    y = 1998
-    center_text(draw, y, "OPEN CAMERA  -  SCAN  -  ORDER", FONT_HINT, GOLD, spacing=3)
-    y += 112
-    center_text(draw, y, f"eden-ipad-menu.vercel.app/?table={table}", FONT_URL, (204, 169, 92))
-
-    draw.rounded_rectangle((430, 2210, CARD_W - 430, 2282), radius=36, outline=(141, 93, 24), width=2)
-    center_text(draw, 2226, "CUSTOMER MENU", FONT_SMALL, GOLD_BRIGHT, spacing=5)
+    y = 2010
+    center_text(draw, y, "ENJOY YOUR EDEN EXPERIENCE", FONT_HINT, GOLD_BRIGHT, spacing=3)
+    y += 92
+    center_text(draw, y, "FRESHLY PREPARED FOR YOUR TABLE", FONT_SMALL, GOLD, spacing=4)
     return card
 
 
