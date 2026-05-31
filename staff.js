@@ -21,6 +21,7 @@ const modalMeta = document.querySelector("[data-modal-meta]");
 const modalItems = document.querySelector("[data-modal-items]");
 const modalClose = document.querySelector("[data-modal-close]");
 const modalHandle = document.querySelector("[data-modal-handle]");
+const alertAudio = document.querySelector("[data-alert-audio]");
 
 const calls = new Map();
 const unseenTables = new Set();
@@ -32,6 +33,7 @@ let realtimeChannel = null;
 let selectedTableKey = null;
 let usesLegacyOrderPayload = false;
 let audioPrimed = false;
+let isFileAlertPlaying = false;
 
 const FLOWING_ALERT_PHRASE = [
   [493.88, 0.34], [659.25, 0.34], [739.99, 0.34], [987.77, 0.56],
@@ -68,7 +70,27 @@ function setStatus(text, live = false) {
 }
 
 function primeAudioOutput() {
-  if (!audioContext || audioPrimed) {
+  if (audioPrimed) {
+    return;
+  }
+
+  if (alertAudio) {
+    alertAudio.volume = 0.01;
+    alertAudio.currentTime = 0;
+    alertAudio.play()
+      .then(() => {
+        if (!isFileAlertPlaying && unseenTables.size === 0) {
+          alertAudio.pause();
+          alertAudio.currentTime = 0;
+        }
+        audioPrimed = true;
+      })
+      .catch(() => {
+        audioPrimed = false;
+      });
+  }
+
+  if (!audioContext) {
     return;
   }
 
@@ -95,21 +117,23 @@ function unlockAudio(shouldPrime = false) {
       audioContext = new AudioContextConstructor();
     }
   }
+  if (shouldPrime) {
+    primeAudioOutput();
+  }
   if (audioContext.state === "suspended") {
-    audioContext.resume().then(() => {
-      if (shouldPrime) {
-        primeAudioOutput();
-      }
-    }).catch(() => {
+    audioContext.resume().catch(() => {
       setStatus("Tap Test Sound");
     });
-  } else if (shouldPrime) {
-    primeAudioOutput();
   }
 }
 
 function stopAlertMelody() {
   alertMelodyToken += 1;
+  isFileAlertPlaying = false;
+  if (alertAudio) {
+    alertAudio.pause();
+    alertAudio.currentTime = 0;
+  }
   if (alertTimer) {
     window.clearTimeout(alertTimer);
     alertTimer = null;
@@ -172,6 +196,23 @@ function scheduleTone(frequency, start, duration, output, index = 0) {
 
 function playAlertMelody() {
   unlockAudio();
+  if (alertAudio) {
+    stopAlertMelody();
+    isFileAlertPlaying = true;
+    alertAudio.volume = 0.88;
+    alertAudio.currentTime = 0;
+    alertAudio.play().catch(() => {
+      isFileAlertPlaying = false;
+      playSynthAlertMelody();
+    });
+    return;
+  }
+
+  playSynthAlertMelody();
+}
+
+function playSynthAlertMelody() {
+  unlockAudio();
   if (!audioContext) {
     return;
   }
@@ -205,7 +246,7 @@ function playAlertMelody() {
 
 function updateAlertLoop() {
   if (unseenTables.size > 0) {
-    if (!alertTimer) {
+    if (!alertTimer && !isFileAlertPlaying) {
       playAlertMelody();
     }
     return;
