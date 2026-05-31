@@ -26,9 +26,22 @@ const calls = new Map();
 const unseenTables = new Set();
 let audioContext = null;
 let alertTimer = null;
+let alertGain = null;
+let alertMelodyToken = 0;
 let realtimeChannel = null;
 let selectedTableKey = null;
 let usesLegacyOrderPayload = false;
+
+const BEETHOVEN_ALERT_PHRASE = [
+  [329.63, 0.42], [329.63, 0.42], [349.23, 0.42], [392, 0.42],
+  [392, 0.42], [349.23, 0.42], [329.63, 0.42], [293.66, 0.42],
+  [261.63, 0.42], [261.63, 0.42], [293.66, 0.42], [329.63, 0.42],
+  [329.63, 0.62], [293.66, 0.2], [293.66, 0.72], [0, 0.26],
+  [329.63, 0.42], [329.63, 0.42], [349.23, 0.42], [392, 0.42],
+  [392, 0.42], [349.23, 0.42], [329.63, 0.42], [293.66, 0.42],
+  [261.63, 0.42], [261.63, 0.42], [293.66, 0.42], [329.63, 0.42],
+  [293.66, 0.62], [261.63, 0.2], [261.63, 0.86], [0, 0.36]
+];
 
 function tableKey(call) {
   return call.table_number ? String(call.table_number) : "guest";
@@ -60,42 +73,92 @@ function unlockAudio() {
   }
 }
 
+function stopAlertMelody() {
+  alertMelodyToken += 1;
+  if (alertTimer) {
+    window.clearTimeout(alertTimer);
+    alertTimer = null;
+  }
+  if (audioContext && alertGain) {
+    const now = audioContext.currentTime;
+    alertGain.gain.cancelScheduledValues(now);
+    alertGain.gain.setTargetAtTime(0.0001, now, 0.045);
+    const gainToDisconnect = alertGain;
+    window.setTimeout(() => gainToDisconnect.disconnect(), 260);
+    alertGain = null;
+  }
+}
+
+function scheduleTone(frequency, start, duration, output) {
+  if (!frequency) {
+    return;
+  }
+
+  const oscillator = audioContext.createOscillator();
+  const harmony = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const end = start + duration;
+
+  oscillator.type = "sine";
+  harmony.type = "triangle";
+  oscillator.frequency.setValueAtTime(frequency, start);
+  harmony.frequency.setValueAtTime(frequency * 2, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(0.105, start + 0.035);
+  gain.gain.setValueAtTime(0.105, Math.max(start + 0.04, end - 0.12));
+  gain.gain.exponentialRampToValueAtTime(0.0001, end);
+
+  oscillator.connect(gain);
+  harmony.connect(gain);
+  gain.connect(output);
+  oscillator.start(start);
+  harmony.start(start);
+  oscillator.stop(end + 0.05);
+  harmony.stop(end + 0.05);
+}
+
 function playAlertMelody() {
   unlockAudio();
   if (!audioContext) {
     return;
   }
 
-  const notes = [659.25, 783.99, 987.77, 880, 1046.5, 1318.51, 987.77];
+  stopAlertMelody();
+  const melodyToken = alertMelodyToken;
+  alertGain = audioContext.createGain();
+  alertGain.gain.setValueAtTime(0.34, audioContext.currentTime);
+  alertGain.connect(audioContext.destination);
+
   const now = audioContext.currentTime;
-  notes.forEach((frequency, index) => {
-    const start = now + index * 0.18;
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(frequency, start);
-    gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(0.22, start + 0.035);
-    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.16);
-    oscillator.connect(gain).connect(audioContext.destination);
-    oscillator.start(start);
-    oscillator.stop(start + 0.18);
-  });
+  let cursor = now + 0.04;
+  const endTime = now + 60;
+
+  while (cursor < endTime) {
+    BEETHOVEN_ALERT_PHRASE.forEach(([frequency, duration]) => {
+      if (cursor < endTime) {
+        scheduleTone(frequency, cursor, Math.min(duration, endTime - cursor), alertGain);
+      }
+      cursor += duration;
+    });
+  }
+
+  alertTimer = window.setTimeout(() => {
+    alertTimer = null;
+    if (melodyToken === alertMelodyToken && unseenTables.size > 0) {
+      playAlertMelody();
+    }
+  }, 60000);
 }
 
 function updateAlertLoop() {
   if (unseenTables.size > 0) {
     if (!alertTimer) {
       playAlertMelody();
-      alertTimer = window.setInterval(playAlertMelody, 3200);
     }
     return;
   }
 
-  if (alertTimer) {
-    window.clearInterval(alertTimer);
-    alertTimer = null;
-  }
+  stopAlertMelody();
 }
 
 function parseOrderItems(call) {
