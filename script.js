@@ -44,6 +44,12 @@ const orderReviewEmpty = document.querySelector("[data-order-review-empty]");
 const orderReviewTotal = document.querySelector("[data-order-review-total]");
 const callWaiterButton = document.querySelector("[data-call-waiter]");
 const callWaiterLabel = document.querySelector("[data-call-waiter-label]");
+const supabaseConfig = window.EDEN_SUPABASE_CONFIG || {};
+const waiterClient = window.supabase && supabaseConfig.url && supabaseConfig.key
+  ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.key)
+  : null;
+const waiterTable = supabaseConfig.waiterTable || "waiter_calls";
+const waiterCooldownMs = 45000;
 
 const sectionPages = {
   "Main Course": {
@@ -1467,17 +1473,73 @@ function closeOrderReview() {
   }, 220);
 }
 
-function callWaiter() {
-  callWaiterButton.classList.add("is-called");
-  callWaiterLabel.textContent = "Called";
-  callWaiterButton.disabled = true;
-  returnToOpeningPage();
+function getCurrentTableNumber() {
+  const raw = new URLSearchParams(window.location.search).get("table");
+  if (!raw) {
+    return null;
+  }
+  const table = Number.parseInt(raw, 10);
+  return Number.isFinite(table) && table > 0 ? table : null;
+}
 
+function getWaiterCooldownKey(tableNumber) {
+  return `eden-waiter-call-${tableNumber || "guest"}`;
+}
+
+function resetCallWaiterButton(delay = 3500) {
   setTimeout(() => {
     callWaiterButton.classList.remove("is-called");
     callWaiterLabel.textContent = "Call Waiter";
     callWaiterButton.disabled = false;
-  }, 3500);
+  }, delay);
+}
+
+async function callWaiter() {
+  if (callWaiterButton.disabled) {
+    return;
+  }
+
+  const tableNumber = getCurrentTableNumber();
+  const cooldownKey = getWaiterCooldownKey(tableNumber);
+  const lastCallTime = Number(window.localStorage.getItem(cooldownKey) || 0);
+  const isCoolingDown = Date.now() - lastCallTime < waiterCooldownMs;
+
+  callWaiterButton.disabled = true;
+  callWaiterLabel.textContent = isCoolingDown ? "Already Called" : "Calling...";
+
+  if (isCoolingDown) {
+    callWaiterButton.classList.add("is-called");
+    returnToOpeningPage();
+    resetCallWaiterButton();
+    return;
+  }
+
+  if (!waiterClient) {
+    callWaiterLabel.textContent = "Not Connected";
+    callWaiterButton.disabled = false;
+    return;
+  }
+
+  const payload = {
+    table_number: tableNumber,
+    status: "new",
+    page_url: window.location.href,
+    user_agent: window.navigator.userAgent.slice(0, 250)
+  };
+
+  const { error } = await waiterClient.from(waiterTable).insert(payload);
+  if (error) {
+    console.error("Could not send waiter call", error);
+    callWaiterLabel.textContent = "Try Again";
+    callWaiterButton.disabled = false;
+    return;
+  }
+
+  window.localStorage.setItem(cooldownKey, String(Date.now()));
+  callWaiterButton.classList.add("is-called");
+  callWaiterLabel.textContent = "Called";
+  returnToOpeningPage();
+  resetCallWaiterButton();
 }
 
 function resizeCanvas() {

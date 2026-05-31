@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050403">
+    <meta name="robots" content="noindex">
+    <title>EDEN Staff</title>
+    <link rel="stylesheet" href="staff.css?v=20260530-waiter1">
+  </head>
+  <body>
+    <main class="staff-shell">
+      <section class="staff-login" data-login>
+        <div class="staff-card login-card">
+          <p class="staff-kicker">EDEN Restaurant & Lounge</p>
+          <h1>Staff Waiter Calls</h1>
+          <label>
+            <span>Staff PIN</span>
+            <input data-pin-input type="password" autocomplete="off" inputmode="text" placeholder="Enter PIN">
+          </label>
+          <button type="button" data-unlock-staff>Open Staff Board</button>
+          <p class="staff-error" data-pin-error hidden>Wrong PIN</p>
+        </div>
+      </section>
+
+      <section class="staff-board" data-board hidden>
+        <header class="staff-header">
+          <div>
+            <p class="staff-kicker">EDEN Restaurant & Lounge</p>
+            <h1>Waiter Calls</h1>
+          </div>
+          <div class="staff-status" data-status>Connecting...</div>
+        </header>
+
+        <section class="staff-summary">
+          <div>
+            <span data-active-count>0</span>
+            <p>Active Calls</p>
+          </div>
+          <button type="button" data-test-sound>Test Sound</button>
+        </section>
+
+        <ul class="call-list" data-call-list></ul>
+
+        <section class="empty-state" data-empty-state>
+          <h2>No waiter calls right now</h2>
+          <p>Keep this page open on the main iPad. New table calls will appear here live.</p>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=20260530-waiter1"></script>
+    <script src="staff.js?v=20260530-waiter1"></script>
+  </body>
+</html>
