@@ -658,6 +658,43 @@ button {
   text-transform: uppercase;
 }
 
+.allergy-notice {
+  display: grid;
+  gap: 5px;
+  width: min(360px, 100%);
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(239, 189, 67, 0.28);
+  border-radius: 8px;
+  color: rgba(255, 244, 208, 0.82);
+  background:
+    linear-gradient(135deg, rgba(239, 189, 67, 0.1), rgba(4, 3, 2, 0.24)),
+    rgba(5, 4, 3, 0.34);
+  box-shadow: inset 0 0 20px rgba(239, 189, 67, 0.05);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.allergy-notice strong {
+  color: #ffe2a1;
+  font-size: clamp(12px, 1.05vw, 14px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.allergy-notice span {
+  color: rgba(255, 248, 220, 0.72);
+  font-size: clamp(12px, 1.05vw, 14px);
+  line-height: 1.35;
+}
+
+.allergy-notice--quick {
+  width: 100%;
+  margin-top: 0;
+  padding: 10px 12px;
+}
+
 .quick-order-instructions {
   display: grid;
   gap: 6px;
@@ -1661,7 +1698,7 @@ button {
 .item-instructions {
   display: block;
   width: min(360px, 100%);
-  margin-top: 22px;
+  margin-top: 14px;
 }
 
 .item-instructions span {
@@ -1728,6 +1765,7 @@ button {
 }
 
 .item-detail-screen[data-mode="hookah"] .item-price,
+.item-detail-screen[data-mode="hookah"] .allergy-notice,
 .item-detail-screen[data-mode="hookah"] .item-instructions,
 .item-detail-screen[data-mode="hookah"] .item-actions {
   display: none !important;
