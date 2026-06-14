@@ -126,19 +126,17 @@ const sectionPages = {
     alt: "EDEN burgers page"
   },
   Shawarma: {
-    src: "assets/shawarma-ready-4k.webp?v=20260614-shawarma",
+    src: "assets/shawarma-ready-4k.webp?v=20260614-shawarma2",
     alt: "EDEN shawarma page"
   },
   "Shawarma Lavash": {
-    src: "assets/shawarma-lavash-page-4k.webp?v=20260614-shawarma",
+    src: "assets/shawarma-lavash-page-4k.webp?v=20260614-shawarma2",
     alt: "EDEN shawarma lavash page",
-    aspect: "phone-tall",
     needsBackOverlay: true
   },
   "Shawarma Pita Bread": {
-    src: "assets/shawarma-pita-page-4k.webp?v=20260614-shawarma",
+    src: "assets/shawarma-pita-page-4k.webp?v=20260614-shawarma2",
     alt: "EDEN shawarma pita bread page",
-    aspect: "phone-tall",
     needsBackOverlay: true
   },
   Specials: {
@@ -226,13 +224,13 @@ const sectionLinks = {
       name: "Shawarma Lavash",
       target: "Shawarma Lavash",
       image: "assets/shawarma-lavash-page-4k.webp",
-      hotspot: { x: 2.6, y: 32.6, w: 94.8, h: 31.6 }
+      hotspot: { x: 3, y: 34.4, w: 94, h: 30.2 }
     },
     {
       name: "Shawarma Pita Bread",
       target: "Shawarma Pita Bread",
       image: "assets/shawarma-pita-page-4k.webp",
-      hotspot: { x: 2.6, y: 66.4, w: 94.8, h: 30.8 }
+      hotspot: { x: 3, y: 67.2, w: 94, h: 29.8 }
     }
   ]
 };
@@ -436,7 +434,7 @@ const itemGroups = {
       image: "assets/detail-shawarma-lavash-chicken-4k.webp",
       description: "Juicy chicken shawarma wrapped in toasted lavash with crisp vegetables and Eden sauces.",
       ingredients: ["chicken shawarma", "lavash", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
-      hotspot: { x: 5.4, y: 28.3, w: 89.6, h: 20.4 }
+      hotspot: { x: 3.4, y: 33.2, w: 93.2, h: 19.8 }
     },
     {
       id: "beef-lamb-shawarma-lavash",
@@ -445,7 +443,7 @@ const itemGroups = {
       image: "assets/detail-shawarma-lavash-beef-lamb-4k.webp",
       description: "Tender beef and lamb shawarma folded into warm lavash with vegetables and rich house sauces.",
       ingredients: ["beef", "lamb", "lavash", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
-      hotspot: { x: 5.4, y: 51.1, w: 89.6, h: 20.4 }
+      hotspot: { x: 3.4, y: 55.4, w: 93.2, h: 19.8 }
     },
     {
       id: "mix-shawarma-lavash",
@@ -454,36 +452,36 @@ const itemGroups = {
       image: "assets/detail-shawarma-lavash-mix-4k.webp",
       description: "A mixed chicken, beef, and lamb shawarma wrapped in toasted lavash with vegetables and Eden sauces.",
       ingredients: ["chicken", "beef", "lamb", "lavash", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
-      hotspot: { x: 5.4, y: 73.7, w: 89.6, h: 20.4 }
+      hotspot: { x: 3.4, y: 77.7, w: 93.2, h: 19.8 }
     }
   ],
   "Shawarma Pita Bread": [
     {
       id: "chicken-shawarma-pita",
       name: "Chicken Shawarma Pita Bread",
-      price: "$10.99",
+      price: "$11.99",
       image: "assets/detail-shawarma-pita-chicken-4k.webp",
       description: "Juicy chicken shawarma served in soft pita bread with crisp vegetables and flavorful sauces.",
       ingredients: ["chicken shawarma", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
-      hotspot: { x: 3.6, y: 28.5, w: 92.8, h: 20.2 }
+      hotspot: { x: 3.4, y: 32.3, w: 93.2, h: 20 }
     },
     {
       id: "beef-lamb-shawarma-pita",
       name: "Beef & Lamb Shawarma Pita Bread",
-      price: "$11.99",
+      price: "$12.99",
       image: "assets/detail-shawarma-pita-beef-lamb-4k.webp",
       description: "Tender beef and lamb shawarma tucked into warm pita with crisp vegetables and house sauce.",
       ingredients: ["beef", "lamb", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
-      hotspot: { x: 3.6, y: 51.1, w: 92.8, h: 20.2 }
+      hotspot: { x: 3.4, y: 55, w: 93.2, h: 20 }
     },
     {
       id: "mix-shawarma-pita",
       name: "Mix Shawarma Pita Bread",
-      price: "$11.99",
+      price: "$12.99",
       image: "assets/detail-shawarma-pita-mix-4k.webp",
       description: "A mixed chicken, beef, and lamb shawarma in soft pita bread with vegetables and Eden sauces.",
       ingredients: ["chicken", "beef", "lamb", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
-      hotspot: { x: 3.6, y: 73.7, w: 92.8, h: 20.2 }
+      hotspot: { x: 3.4, y: 77.6, w: 93.2, h: 20 }
     }
   ],
   "Heavy Blend": [
