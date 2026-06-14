@@ -460,7 +460,7 @@ const itemGroups = {
       id: "chicken-shawarma-pita",
       name: "Chicken Shawarma Pita Bread",
       price: "$11.99",
-      image: "assets/detail-shawarma-pita-chicken-4k.webp",
+      image: "assets/detail-shawarma-pita-chicken-4k.webp?v=20260614-pita-real",
       description: "Juicy chicken shawarma served in soft pita bread with crisp vegetables and flavorful sauces.",
       ingredients: ["chicken shawarma", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
       hotspot: { x: 3.4, y: 32.3, w: 93.2, h: 20 }
@@ -469,7 +469,7 @@ const itemGroups = {
       id: "beef-lamb-shawarma-pita",
       name: "Beef & Lamb Shawarma Pita Bread",
       price: "$12.99",
-      image: "assets/detail-shawarma-pita-beef-lamb-4k.webp",
+      image: "assets/detail-shawarma-pita-beef-lamb-4k.webp?v=20260614-pita-real",
       description: "Tender beef and lamb shawarma tucked into warm pita with crisp vegetables and house sauce.",
       ingredients: ["beef", "lamb", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
       hotspot: { x: 3.4, y: 55, w: 93.2, h: 20 }
@@ -478,7 +478,7 @@ const itemGroups = {
       id: "mix-shawarma-pita",
       name: "Mix Shawarma Pita Bread",
       price: "$12.99",
-      image: "assets/detail-shawarma-pita-mix-4k.webp",
+      image: "assets/detail-shawarma-pita-mix-4k.webp?v=20260614-pita-real",
       description: "A mixed chicken, beef, and lamb shawarma in soft pita bread with vegetables and Eden sauces.",
       ingredients: ["chicken", "beef", "lamb", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
       hotspot: { x: 3.4, y: 77.6, w: 93.2, h: 20 }
