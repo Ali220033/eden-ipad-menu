@@ -195,6 +195,11 @@ button {
   aspect-ratio: 3 / 4;
 }
 
+.ipad-shell[data-section-aspect="phone-tall"] .section-screen {
+  width: min(100vw - 20px, calc((100dvh - 20px) * 0.46258), 853px);
+  aspect-ratio: 853 / 1844;
+}
+
 .section-screen {
   z-index: 1;
   width: min(100vw - 20px, calc((100dvh - 20px) * 0.6666667), 1024px);
@@ -2313,6 +2318,12 @@ button {
   .ipad-shell[data-section-aspect="four-three"][data-screen="section"] .basket-widget {
     width: min(calc(100vw - 12px), calc((100dvh - 12px) * 0.75));
     aspect-ratio: 3 / 4;
+  }
+
+  .ipad-shell[data-section-aspect="phone-tall"] .section-screen,
+  .ipad-shell[data-section-aspect="phone-tall"][data-screen="section"] .basket-widget {
+    width: min(calc(100vw - 12px), calc((100dvh - 12px) * 0.46258));
+    aspect-ratio: 853 / 1844;
   }
 
   .item-detail-screen,

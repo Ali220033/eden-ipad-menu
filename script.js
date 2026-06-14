@@ -126,8 +126,20 @@ const sectionPages = {
     alt: "EDEN burgers page"
   },
   Shawarma: {
-    src: "assets/shawarma-coming-soon-4k.webp?v=20260531-mobile4",
-    alt: "EDEN shawarma coming soon page"
+    src: "assets/shawarma-ready-4k.webp?v=20260614-shawarma",
+    alt: "EDEN shawarma page"
+  },
+  "Shawarma Lavash": {
+    src: "assets/shawarma-lavash-page-4k.webp?v=20260614-shawarma",
+    alt: "EDEN shawarma lavash page",
+    aspect: "phone-tall",
+    needsBackOverlay: true
+  },
+  "Shawarma Pita Bread": {
+    src: "assets/shawarma-pita-page-4k.webp?v=20260614-shawarma",
+    alt: "EDEN shawarma pita bread page",
+    aspect: "phone-tall",
+    needsBackOverlay: true
   },
   Specials: {
     src: "assets/specials-coming-soon-4k.webp?v=20260531-mobile4",
@@ -161,6 +173,9 @@ const overlayBackSections = new Set([
   "Milkshakes",
   "Lemonades",
   "Soft Drinks",
+  "Shawarma",
+  "Shawarma Lavash",
+  "Shawarma Pita Bread",
   "Heavy Blend",
   "Balanced Blend",
   "Light & Smooth Blend",
@@ -198,16 +213,33 @@ const menuSectionNames = {
 };
 
 const comingSoonSections = {
-  Shawarma: {
-    eyebrow: "EDEN Food Menu",
-    title: "Shawarma",
-    description: "Coming Soon"
-  },
   Specials: {
     eyebrow: "EDEN Restaurant & Lounge",
     title: "Specials",
     description: "Coming Soon"
   }
+};
+
+const sectionLinks = {
+  Shawarma: [
+    {
+      name: "Shawarma Lavash",
+      target: "Shawarma Lavash",
+      image: "assets/shawarma-lavash-page-4k.webp",
+      hotspot: { x: 2.6, y: 32.6, w: 94.8, h: 31.6 }
+    },
+    {
+      name: "Shawarma Pita Bread",
+      target: "Shawarma Pita Bread",
+      image: "assets/shawarma-pita-page-4k.webp",
+      hotspot: { x: 2.6, y: 66.4, w: 94.8, h: 30.8 }
+    }
+  ]
+};
+
+const sectionParents = {
+  "Shawarma Lavash": "Shawarma",
+  "Shawarma Pita Bread": "Shawarma"
 };
 
 const itemGroups = {
@@ -394,6 +426,64 @@ const itemGroups = {
       description: "Beef patty, cheddar, lettuce, tomato, red onion, signature Eden sauce, and fries.",
       ingredients: ["beef patty", "cheddar", "lettuce", "tomato", "red onion", "Eden sauce", "fries"],
       hotspot: { x: 2.2, y: 74.7, w: 95.8, h: 21.8 }
+    }
+  ],
+  "Shawarma Lavash": [
+    {
+      id: "chicken-shawarma-lavash",
+      name: "Chicken Shawarma Lavash",
+      price: "$10.99",
+      image: "assets/detail-shawarma-lavash-chicken-4k.webp",
+      description: "Juicy chicken shawarma wrapped in toasted lavash with crisp vegetables and Eden sauces.",
+      ingredients: ["chicken shawarma", "lavash", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
+      hotspot: { x: 5.4, y: 28.3, w: 89.6, h: 20.4 }
+    },
+    {
+      id: "beef-lamb-shawarma-lavash",
+      name: "Beef & Lamb Shawarma Lavash",
+      price: "$11.99",
+      image: "assets/detail-shawarma-lavash-beef-lamb-4k.webp",
+      description: "Tender beef and lamb shawarma folded into warm lavash with vegetables and rich house sauces.",
+      ingredients: ["beef", "lamb", "lavash", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
+      hotspot: { x: 5.4, y: 51.1, w: 89.6, h: 20.4 }
+    },
+    {
+      id: "mix-shawarma-lavash",
+      name: "Mix Shawarma Lavash",
+      price: "$11.99",
+      image: "assets/detail-shawarma-lavash-mix-4k.webp",
+      description: "A mixed chicken, beef, and lamb shawarma wrapped in toasted lavash with vegetables and Eden sauces.",
+      ingredients: ["chicken", "beef", "lamb", "lavash", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
+      hotspot: { x: 5.4, y: 73.7, w: 89.6, h: 20.4 }
+    }
+  ],
+  "Shawarma Pita Bread": [
+    {
+      id: "chicken-shawarma-pita",
+      name: "Chicken Shawarma Pita Bread",
+      price: "$10.99",
+      image: "assets/detail-shawarma-pita-chicken-4k.webp",
+      description: "Juicy chicken shawarma served in soft pita bread with crisp vegetables and flavorful sauces.",
+      ingredients: ["chicken shawarma", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
+      hotspot: { x: 3.6, y: 28.5, w: 92.8, h: 20.2 }
+    },
+    {
+      id: "beef-lamb-shawarma-pita",
+      name: "Beef & Lamb Shawarma Pita Bread",
+      price: "$11.99",
+      image: "assets/detail-shawarma-pita-beef-lamb-4k.webp",
+      description: "Tender beef and lamb shawarma tucked into warm pita with crisp vegetables and house sauce.",
+      ingredients: ["beef", "lamb", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
+      hotspot: { x: 3.6, y: 51.1, w: 92.8, h: 20.2 }
+    },
+    {
+      id: "mix-shawarma-pita",
+      name: "Mix Shawarma Pita Bread",
+      price: "$11.99",
+      image: "assets/detail-shawarma-pita-mix-4k.webp",
+      description: "A mixed chicken, beef, and lamb shawarma in soft pita bread with vegetables and Eden sauces.",
+      ingredients: ["chicken", "beef", "lamb", "pita bread", "fresh vegetables", "pickles", "garlic sauce", "Eden sauce"],
+      hotspot: { x: 3.6, y: 73.7, w: 92.8, h: 20.2 }
     }
   ],
   "Heavy Blend": [
@@ -1038,6 +1128,11 @@ async function openSection(name) {
 }
 
 function closeSection() {
+  const parentSection = sectionParents[activeSection];
+  if (parentSection) {
+    openSection(parentSection);
+    return;
+  }
   navigationToken += 1;
   sectionScreen.classList.remove("is-preparing");
   runTransition();
@@ -1115,6 +1210,28 @@ function clearItemHotspots() {
 
 function renderItemHotspots(section) {
   clearItemHotspots();
+  const links = sectionLinks[section] || [];
+  if (links.length) {
+    sectionScreen.classList.add("has-item-hotspots");
+    warmImages(links.map((link) => link.image || sectionPages[link.target]?.src), "high");
+    links.forEach((link) => {
+      const button = document.createElement("button");
+      const hotspot = link.hotspot;
+      button.type = "button";
+      button.className = "item-hotspot";
+      button.style.left = `${hotspot.x}%`;
+      button.style.top = `${hotspot.y}%`;
+      button.style.width = `${hotspot.w}%`;
+      button.style.height = `${hotspot.h}%`;
+      button.setAttribute("aria-label", `Open ${link.name}`);
+      button.addEventListener("pointerenter", () => preloadImage(sectionPages[link.target]?.src || link.image, "high"));
+      button.addEventListener("touchstart", () => preloadImage(sectionPages[link.target]?.src || link.image, "high"), { passive: true });
+      button.addEventListener("click", () => openSection(link.target));
+      itemHotspots.appendChild(button);
+    });
+    return;
+  }
+
   const group = itemGroups[section] || [];
   if (group.length) {
     sectionScreen.classList.add("has-item-hotspots");
