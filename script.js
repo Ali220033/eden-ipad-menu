@@ -122,7 +122,7 @@ const sectionPages = {
     alt: "EDEN appetizers page"
   },
   Burgers: {
-    src: "assets/burgers-new-page-4k.webp?v=20260618-burgers2",
+    src: "assets/burgers-new-page-4k.webp?v=20260618-burgers3",
     alt: "EDEN burgers page"
   },
   Shawarma: {
