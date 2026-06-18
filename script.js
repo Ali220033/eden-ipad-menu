@@ -122,7 +122,7 @@ const sectionPages = {
     alt: "EDEN appetizers page"
   },
   Burgers: {
-    src: "assets/burgers-new-page-4k.webp",
+    src: "assets/burgers-new-page-4k.webp?v=20260618-burgers2",
     alt: "EDEN burgers page"
   },
   Shawarma: {
@@ -399,31 +399,22 @@ const itemGroups = {
   ],
   Burgers: [
     {
-      id: "eden-burger-cheese",
-      name: "Eden Burger with Cheese on Top",
-      price: "$16.99",
-      image: "assets/detail-burger-cheese-4k.webp",
-      description: "Premium beef, melted cheddar crown, fresh lettuce, tomato, onion, Eden sauce, and fries.",
-      ingredients: ["beef patty", "cheddar cheese", "lettuce", "tomato", "onion", "Eden sauce", "fries"],
-      hotspot: { x: 2.2, y: 26.3, w: 95.8, h: 23.6 }
-    },
-    {
       id: "chicken-burger",
       name: "Chicken Burger",
       price: "$14.99",
       image: "assets/detail-burger-chicken-4k.webp",
       description: "Crispy chicken, creamy slaw, toasted brioche, fries, and house ketchup.",
       ingredients: ["crispy chicken", "creamy slaw", "brioche bun", "fries", "ketchup"],
-      hotspot: { x: 2.2, y: 51.4, w: 95.8, h: 22.3 }
+      hotspot: { x: 2.2, y: 30.4, w: 95.8, h: 32.8 }
     },
     {
       id: "eden-burger",
-      name: "Eden Burger",
-      price: "$14.99",
+      name: "Eden House Burger",
+      price: "$16.99",
       image: "assets/detail-burger-eden-4k.webp",
       description: "Beef patty, cheddar, lettuce, tomato, red onion, signature Eden sauce, and fries.",
       ingredients: ["beef patty", "cheddar", "lettuce", "tomato", "red onion", "Eden sauce", "fries"],
-      hotspot: { x: 2.2, y: 74.7, w: 95.8, h: 21.8 }
+      hotspot: { x: 2.2, y: 65.4, w: 95.8, h: 28.8 }
     }
   ],
   "Shawarma Lavash": [
